@@ -1,0 +1,13 @@
+*~
+*.bak
+symbols.rds
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+roxygen2-*.R
+.DS_Store
+cran-comments.md
+.lintr
+.editorconfig
+.vscode/settings.json

@@ -1,0 +1,54 @@
+#' Anesthesia Dataset for Dose-Response Network Meta-Analysis
+#'
+#' @description
+#' This dataset is a subset of a synthesis of randomized controlled studies investigating the effects
+#' of different anesthetic agents on vomiting within 24 hours postoperatively.
+#' Multicomponent interventions have been excluded from this subset to focus on
+#' single-agent interventions and their dose-response relationships.
+#'
+#' @details
+#' The dataset includes data on several anesthetic agents and their observed effects
+#' across multiple clinical randomized controlled trials. The primary outcome is the occurrence of vomiting
+#' within 24 hours after surgery. By excluding multicomponent interventions, this subset
+#' allows for a more precise evaluation of single-agent dose-response relationships.
+#'
+#' The dataset is structured in an arm-level format and includes the following variables:
+#' \itemize{
+#'   \item \code{agent}: Name of the anesthetic agent.
+#'   \item \code{event}: Number of participants who experienced vomiting within 24 hours postoperatively.
+#'   \item \code{n}: Total number of participants in the study arm.
+#'   \item \code{dose}: Dose levels of the anesthetic agents.
+#'   \item \code{studlab}: Unique identifier for the study.
+#' }
+#'
+#' This dataset is intended for use in dose-response network meta-analysis to explore
+#' the effects of single agents across various doses.
+#'
+#' @name anesthesia
+#' @aliases anesthesia
+#'
+#' @docType data
+#'
+#' @format
+#' A data frame with the following columns:
+#' \tabular{rl}{
+#'   \bold{\emph{agent}} \tab Character vector indicating the name of the anesthetic agent. \cr
+#'   \bold{\emph{event}} \tab Integer vector for the number of participants who experienced vomiting. \cr
+#'   \bold{\emph{n}} \tab Integer vector for the total number of participants in the study arm. \cr
+#'   \bold{\emph{dose}} \tab Numeric vector specifying the dose levels of the anesthetic agents. \cr
+#'   \bold{\emph{studlab}} \tab Character vector with unique study identifiers.
+#' }
+#'
+#' @source
+#' The dataset is a subset of data derived from:
+#' Weibel S, et al. (2020). "Drugs for preventing postoperative nausea and vomiting in adults after general anaesthesia: an abridged Cochrane network meta-analysis". \emph{Anaesthesia}. doi:10.1111/anae.15295
+#'
+#' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anesthesia)
+#' # Summarize the dataset
+#' summary(anesthesia)
+#' }
+"anesthesia"
