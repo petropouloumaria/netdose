@@ -8,8 +8,6 @@ Version](https://www.r-pkg.org/badges/version/netdose)](https://cran.r-project.o
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/netdose)](https://cranlogs.r-pkg.org/badges/netdose)
 
-<img src="man/figures/netdose_logo.png" width=300 align="right" style="margin-left:20px; margin-right: 20px;"/>
-
 ## Description
 
 `netdose` is an R package for conducting **Dose-Response Network
