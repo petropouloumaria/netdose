@@ -1,4 +1,5 @@
 netdose: Dose-Response Network Meta-Analysis in a Frequentist Way
+================
 
 [![License: GPL
 (\>=2)](https://img.shields.io/badge/license-GPL-blue)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
