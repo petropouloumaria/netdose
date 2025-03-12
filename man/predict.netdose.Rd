@@ -82,7 +82,7 @@ pred1
 
 }
 \references{
-Petropoulou et al. (2024):
+Petropoulou et al. (2025):
 Network meta-analysis with dose-response relationships.
 }
 \author{

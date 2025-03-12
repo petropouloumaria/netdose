@@ -7,39 +7,59 @@
 \format{
 A data frame with the following columns:
 \tabular{rl}{
-  \bold{\emph{agent}} \tab Character vector indicating the name of the anesthetic agent. \cr
-  \bold{\emph{event}} \tab Integer vector for the number of participants who experienced vomiting. \cr
-  \bold{\emph{n}} \tab Integer vector for the total number of participants in the study arm. \cr
-  \bold{\emph{dose}} \tab Numeric vector specifying the dose levels of the anesthetic agents. \cr
-  \bold{\emph{studlab}} \tab Character vector with unique study identifiers.
+  \bold{\emph{agent1}} \tab Character vector indicating the name of the anesthetic agent in arm 1. \cr
+  \bold{\emph{agent2}} \tab Character vector indicating the name of the anesthetic agent in arm 2. \cr
+  \bold{\emph{agent3}} \tab Character vector indicating the name of the anesthetic agent in arm 3. \cr
+  \bold{\emph{agent4}} \tab Character vector indicating the name of the anesthetic agent in arm 4. \cr
+  \bold{\emph{agent5}} \tab Character vector indicating the name of the anesthetic agent in arm 5. \cr
+  \bold{\emph{event1}} \tab Integer vector for the number of participants who experienced vomiting in arm 1. \cr
+  \bold{\emph{event2}} \tab Integer vector for the number of participants who experienced vomiting in arm 2. \cr
+  \bold{\emph{event3}} \tab Integer vector for the number of participants who experienced vomiting in arm 3. \cr
+  \bold{\emph{event4}} \tab Integer vector for the number of participants who experienced vomiting in arm 4. \cr
+  \bold{\emph{event5}} \tab Integer vector for the number of participants who experienced vomiting in arm 5. \cr
+  \bold{\emph{n1}} \tab Integer vector for the total number of participants in study arm 1. \cr
+  \bold{\emph{n2}} \tab Integer vector for the total number of participants in study arm 2. \cr
+  \bold{\emph{n3}} \tab Integer vector for the total number of participants in study arm 3. \cr
+  \bold{\emph{n4}} \tab Integer vector for the total number of participants in study arm 4. \cr
+  \bold{\emph{n5}} \tab Integer vector for the total number of participants in study arm 5. \cr
+  \bold{\emph{dose1}} \tab Numeric vector specifying the dose level in arm 1. \cr
+  \bold{\emph{dose2}} \tab Numeric vector specifying the dose level in arm 2. \cr
+  \bold{\emph{dose3}} \tab Numeric vector specifying the dose level in arm 3. \cr
+  \bold{\emph{dose4}} \tab Numeric vector specifying the dose level in arm  4. \cr
+  \bold{\emph{dose5}} \tab Numeric vector specifying the dose level in arm 5. \cr
+  \bold{\emph{studyid}} \tab Character vector with unique study identifiers. \cr
 }
 }
 \source{
 The dataset is a subset of data derived from:
-Weibel S, et al. (2020). "Drugs for preventing postoperative nausea and vomiting in adults after general anaesthesia: an abridged Cochrane network meta-analysis". \emph{Anaesthesia}. doi:10.1111/anae.15295
+Weibel S, Rücker G, Eberhart LHJ, et al. Drugs for preventing postoperative nausea and vomiting in adults after general
+anaesthesia: a network meta-analysis. Cochrane Database of Systematic Reviews. 2020;10(10):CD012859.
+Weibel S, Schaefer MS, Raj D, et al. Drugs for preventing postoperative nausea and vomiting in adults after general
+anaesthesia: an abridged Cochrane network meta-analysis. Anaesthesia. 2021;76:962-973.
 }
 \usage{
 anesthesia
 }
 \description{
-This dataset is a subset of a synthesis of randomized controlled studies investigating the effects
-of different anesthetic agents on vomiting within 24 hours postoperatively.
+This dataset is a synthesis of randomized controlled studies investigating the effects
+of different agents for preventing vomiting within 24 h postoperatively
+in adults after general anaesthesia.
 Multicomponent interventions have been excluded from this subset to focus on
 single-agent interventions and their dose-response relationships.
 }
 \details{
-The dataset includes data on several anesthetic agents and their observed effects
-across multiple clinical randomized controlled trials. The primary outcome is the occurrence of vomiting
+The dataset includes data on several agents for preventing vomiting and their observed effects
+across multiple clinical randomized controlled trials. The outcome is the occurrence of vomiting
 within 24 hours after surgery. By excluding multicomponent interventions, this subset
 allows for a more precise evaluation of single-agent dose-response relationships.
 
-The dataset is structured in an arm-level format and includes the following variables:
+The dataset is structured in a contrast-based format and includes the following variables:
 \itemize{
-  \item \code{agent}: Name of the anesthetic agent.
-  \item \code{event}: Number of participants who experienced vomiting within 24 hours postoperatively.
-  \item \code{n}: Total number of participants in the study arm.
-  \item \code{dose}: Dose levels of the anesthetic agents.
-  \item \code{studlab}: Unique identifier for the study.
+  \item \code{agent1}, \code{agent2}, \code{agent3}, \code{agent4}, \code{agent5}: Names of the anesthetic agents used in each study arm.
+  \item \code{event1}, \code{event2}, \code{event3}, \code{event4}, \code{event5}: Number of participants who experienced vomiting within 24 hours postoperatively in each study arm.
+  \item \code{n1}, \code{n2}, \code{n3}, \code{n4}, \code{n5}: Total number of participants in each study arm.
+  \item \code{dose1}, \code{dose2}, \code{dose3}, \code{dose4}, \code{dose5}: Dose levels of the anesthetic agents in each study arm.
+  \item \code{studyid}: Unique identifier for the study.
 }
 
 This dataset is intended for use in dose-response network meta-analysis to explore

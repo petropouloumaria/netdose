@@ -8,10 +8,10 @@
 #'
 #' @details
 #' R package \bold{netdose} is a tool to conduct dose-response network meta-analysis
-#' a frequentist way (Petropoulou, 2024). The package can implement the dose-response
+#' a frequentist way (Petropoulou et al, 2025). The package can implement the dose-response
 #' network meta-analysis model (function (\code{\link{netdose}})); calculate the predicted values of the dose-response
 #' network meta-analysis model (function (\code{\link{predict}})); provide dose-response plots
-#' (function (\code{\link{plot.netdose}})) (Petropoulou et al., 2024).
+#' (function (\code{\link{plot.netdose}})) (Petropoulou et al., 2025).
 #'
 #' Type \code{help(package = "netdose")} for a listing of R functions
 #' available in \bold{netdose}.
@@ -20,18 +20,18 @@
 #' in publications.
 #'
 #' To report problems and bugs, please send an email to Dr. Maria
-#' Petropoulou <maria.petropoulou@@.uniklinik-freiburg.de>.
+#' Petropoulou <maria.petropoulou@uniklinik-freiburg.de>.
 #'
 #' The development version of \bold{netdose} is available on GitHub
 #' \url{https://github.com/petropouloumaria/netdose}.
 #'
 #' @name netdose-package
 #'
-#' @author Petropoulou Maria <maria.petropoulou@@.uniklinik-freiburg.de>,
-#'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
+#' @author Petropoulou Maria <maria.petropoulou@.uniklinik-freiburg.de>,
+#'   Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
 #'
 #' @references
-#' Petropoulou et al. (2024):
+#' Petropoulou et al. (2025):
 #' Network meta-analysis with dose-response relationships.
 #'
 #' @keywords package

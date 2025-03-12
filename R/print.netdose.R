@@ -136,13 +136,6 @@ print.netdose <- function(x,
     dat1.c[trts == reference.group, ] <- rep(".", ncol(dat1.c))
     dimnames(dat1.c) <-
         list(trts, c(sm.lab, ci.lab, "z", "p-value"))
-    ##
-    ## if (!is.na(x$TE.drnma.common[trts == reference.group]) &&
-    ##    x$TE.drnma.common[trts == reference.group] == noeffect) {
-    ##    dat1.c[trts == reference.group, ] <- "."
-    ## }
-    # rownames(dat1.c) <- trts.abbr
-
 
 
     dat1.r <-
@@ -174,13 +167,6 @@ print.netdose <- function(x,
     dat1.r[trts == reference.group, ] <- rep(".", ncol(dat1.r))
     dimnames(dat1.r) <-
         list(trts, c(sm.lab, ci.lab, "z", "p-value"))
-    ##
-    ## if (!is.na(x$TE.drnma.random[trts == reference.group]) &&
-    ##    x$TE.drnma.random[trts == reference.group] == noeffect) {
-    ##    dat1.r[trts == reference.group, ] <- "."
-    ## }
-    # rownames(dat1.c) <- trts.abbr
-
 
 
     if (common) {
@@ -269,6 +255,12 @@ print.netdose <- function(x,
     names(hetdat) <- c("Q", "df", "p-value")
     ##
     print(hetdat)
+
+    cat("Q to df ratio for DR-NMA model:",
+        formatPT(x$Q.to.df.ratio,
+                 lab = TRUE, labval = "Q/df",
+                 digits = digits.Q,
+                 lab.NA = "NA", big.mark = big.mark))
 
     invisible(NULL)
 }

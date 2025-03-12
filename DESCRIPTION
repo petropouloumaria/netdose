@@ -1,7 +1,7 @@
 Package: netdose
 Title: netdose: Dose-Response Network Meta-Analysis in a Frequentist Way
-Version: 0.4-0
-Date: 2024-11-26
+Version: 0.6-0
+Date: 2025-03-12
 Depends: R (>= 3.5.0), netmeta (>= 2.9-0)
 Imports: MASS, Hmisc, meta, ggplot2, gridExtra, Matrix
 Authors@R: c(person("Maria", "Petropoulou",
@@ -16,6 +16,6 @@ URL: https://github.com/petropouloumaria/netdose
 Description: A set of functions providing the implementation of the network meta-analysis model with dose-response relationships, predicted values of the fitted model and dose-response plots in a frequentist way.
 License: GPL (>= 2)
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
 LazyData: true

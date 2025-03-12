@@ -18,7 +18,7 @@
 #'   By default, \code{"black"} when \code{only.direct = TRUE}; otherwise, \code{"green"}.
 #' @param col.indirect The color used for points representing indirect comparisons.
 #'   Defaults to \code{"red"}.
-#' @param \dots Additional arguments.  Currently ignored, but included for potential
+#' @param \dots Additional arguments. Currently ignored, but included for potential
 #'   future extensions or compatibility with generic plotting functions.
 #'
 #'
@@ -35,11 +35,11 @@
 #'
 #' This visualization aids in understanding the relationship between dose and
 #' response while validating the model fit against observed data.
-
+#'
 #' @keywords hplot
 #'
-#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
-#'  Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
+#' @author Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
+#'  Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
 #'
 #' @examples
 #' # Load anesthesia data
@@ -185,9 +185,6 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
           color = ifelse(active, col.indirect, col.direct), size = 1
         )
     }
-
-    # ylim(0, max(c(upper.pred,  resp)))
-    # ylim(0, max(linedata$upper.pred, resp))
 
     plots_list[[i]] <- plot
   } # end for loop

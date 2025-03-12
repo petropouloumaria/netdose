@@ -4,6 +4,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
                      Xd, D.matrix,
                      n, Q, df.Q.diff,
                      level, reference) {
+
   m <- length(TE) # number of pairwise comparisons
   a <- length(unique(c(agent1, agent2))) # Number of agents
   #
@@ -93,7 +94,6 @@ nma_dose <- function(TE, seTE, weights, studlab,
   all.comparisons <- ci(delta.all.matrix, se.delta.all.matrix,
     level = level
   )
-
   #
   # Test of total heterogeneity / inconsistency:
   #
@@ -184,55 +184,3 @@ nma_dose <- function(TE, seTE, weights, studlab,
   res
 }
 
-
-# (Restricted) maximum log-likelihood function for NMA model
-
-loglik_reml <- function(x, TE, seTE, treat1, treat2, studlab, Xd,
-                        method.tau = "ML", func.inverse = invmat) {
-  # Heterogeneity variance estimator
-  tau2 <- exp(x)
-
-  m <- length(TE)
-
-  p2 <- prepare(TE, seTE, treat1, treat2, studlab,
-    tau = sqrt(tau2), func.inverse = func.inverse
-  )
-
-  o2 <- order(p2$order)
-
-  w.pooled <- p2$weights[o2]
-
-  W <- diag(w.pooled, nrow = length(w.pooled)) # Diagonal matrix of weights
-
-  # L is the weighted Laplacian (Kirchhoff) matrix (n x n)
-  #
-  L.matrix <- t(Xd) %*% W %*% Xd
-
-  # Lplus is its Moore-Penrose pseudoinverse
-  #
-  Lplus <- ginv(L.matrix)
-
-  G <- Xd %*% Lplus %*% t(Xd)
-  H <- G %*% W
-
-  beta <- as.vector(Lplus %*% t(Xd) %*% W %*% TE)
-
-  #
-  # delta = treatment estimates for observed comparisons
-  #
-  delta <- as.vector(Xd %*% beta) # = H %*% TE
-
-  # Test of total heterogeneity / inconsistency:
-  #
-  Q <- as.vector(t(delta - TE) %*% W %*% (delta - TE))
-
-  # ML log-likelihood function (ML)
-  #
-  res <- -(m / 2) * log(2 * pi) + (1 / 2) * log(det(W)) - (1 / 2) * Q
-
-  # REML log-likelihood function (RL)
-  #
-  # res <- res - (1/2)*log(det(L.matrix))
-
-  res
-}

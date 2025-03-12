@@ -2,8 +2,8 @@
 # Auxiliary functions
 #
 # Package: netdose
-# Authors: Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>,
-# Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>
+# Authors: Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
+# Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>,
 # License: GPL (>= 2)
 #
 
@@ -136,20 +136,44 @@ createXd1 <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
       dimnames = list(trts, seq)
     )
 
-  # Split the vector into two parts
-  split_vector <- strsplit(trts, " ")
+  # Use regex to separate the agent (all words except the last) and dose (last word)
+  data_list <- strsplit(trts, "(?<=\\D)\\s(?=\\d)", perl = TRUE)
 
-  # Extract the values and characters
-  values <- sapply(split_vector, function(x) as.numeric(x[2]))
-  characters <- sapply(split_vector, function(x) x[1])
+
+  # Extract agents and doses
+  agent_names <- sapply(data_list, function(x) {
+    # If only one element exists, try to split it manually
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split by space
+      if (length(split_x) > 1) {
+        paste(split_x[-length(split_x)], collapse = " ")  # Take all except last
+      } else {
+        split_x  # If it cannot be split, return as is
+      }
+    } else {
+      paste(x[-length(x)], collapse = " ")  # Normal case: take all except last
+    }
+  })
+
+  doses <- sapply(data_list, function(x) {
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split manually if needed
+      dose <- suppressWarnings(as.numeric(split_x[length(split_x)]))  # Convert to number
+    } else {
+      dose <- suppressWarnings(as.numeric(x[length(x)]))  # Normal case
+    }
+    ifelse(is.na(dose), NA, dose)  # Return NA if conversion fails
+  })
+
   #
   for (i in seq_len(nrow(B.matrix))) {
     B.matrix[i, treat1[i]] <- 1
     B.matrix[i, treat2[i]] <- -1
   }
   #
+
   for (i in seq_len(nrow(D))) {
-    D[i, characters[i]] <- do.call(g, list(x = values[i], p = param))
+    D[i, agent_names[i]]  <- do.call(g, list(x = doses[i], p = param))
   }
   #
   Xd <- B.matrix %*% D
@@ -198,13 +222,37 @@ createXd2 <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
       nrow = length(trts), ncol = length(agents),
       dimnames = list(trts, seq)
     )
-  #
-  # Split the vector into two parts
-  split_vector <- strsplit(trts, " ")
 
-  # Extract the values and characters
-  values <- sapply(split_vector, function(x) as.numeric(x[2]))
-  characters <- sapply(split_vector, function(x) x[1])
+
+  # Use regex to separate the agent (all words except the last) and dose (last word)
+  data_list <- strsplit(trts, "(?<=\\D)\\s(?=\\d)", perl = TRUE)
+
+
+  # Extract agents and doses
+  agent_names <- sapply(data_list, function(x) {
+    # If only one element exists, try to split it manually
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split by space
+      if (length(split_x) > 1) {
+        paste(split_x[-length(split_x)], collapse = " ")  # Take all except last
+      } else {
+        split_x  # If it cannot be split, return as is
+      }
+    } else {
+      paste(x[-length(x)], collapse = " ")  # Normal case: take all except last
+    }
+  })
+
+  doses <- sapply(data_list, function(x) {
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split manually if needed
+      dose <- suppressWarnings(as.numeric(split_x[length(split_x)]))  # Convert to number
+    } else {
+      dose <- suppressWarnings(as.numeric(x[length(x)]))  # Normal case
+    }
+    ifelse(is.na(dose), NA, dose)  # Return NA if conversion fails
+  })
+
   #
   for (i in seq_len(nrow(B.matrix))) {
     B.matrix[i, treat1[i]] <- 1
@@ -212,8 +260,8 @@ createXd2 <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
   }
   #
   for (i in seq_len(nrow(D1))) {
-    D1[i, characters[i]] <- do.call(g1, list(x = values[i], p = param[1]))
-    D2[i, characters[i]] <- do.call(g2, list(x = values[i], p = param[2]))
+    D1[i, agent_names[i]] <- do.call(g1, list(x = doses[i], p = param[1]))
+    D2[i, agent_names[i]] <- do.call(g2, list(x = doses[i], p = param[2]))
   }
   #
   Xd <- cbind(B.matrix %*% D1, B.matrix %*% D2)
@@ -261,16 +309,14 @@ createXd_rcs <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
   names(knots) <- agents
   #
   for (i in seq_along(agents)) {
+
     # Harrell's suggestion (fixed sample quantiles)
     if (is.null(param)) {
       param <- c(0.10, 0.50, 0.90)
     }
     dose.i <- c(dose1[agent1 == agents[i]], dose2[agent2 == agents[i]])
     #
-    knots.i <-
-      quantile(c(min(dose.i, na.rm = TRUE), max(dose.i, na.rm = TRUE)),
-        probs = param
-      )
+    knots.i <- quantile(dose.i, probs = param)
     #
     knots[[agents[i]]] <- knots.i
   }
@@ -290,22 +336,48 @@ createXd_rcs <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
   g1 <- dose2dose
   g2 <- dose2rcs
   #
-  # Split the vector into two parts
-  split_vector <- strsplit(trts, " ")
 
-  # Extract the values and characters
-  values <- sapply(split_vector, function(x) as.numeric(x[2]))
-  characters <- sapply(split_vector, function(x) x[1])
+  # Use regex to separate the agent (all words except the last) and dose (last word)
+  data_list <- strsplit(trts, "(?<=\\D)\\s(?=\\d)", perl = TRUE)
+
+
+  # Extract agents and doses
+  agent_names <- sapply(data_list, function(x) {
+    # If only one element exists, try to split it manually
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split by space
+      if (length(split_x) > 1) {
+        paste(split_x[-length(split_x)], collapse = " ")  # Take all except last
+      } else {
+        split_x  # If it cannot be split, return as is
+      }
+    } else {
+      paste(x[-length(x)], collapse = " ")  # Normal case: take all except last
+    }
+  })
+
+  doses <- sapply(data_list, function(x) {
+    if (length(x) == 1) {
+      split_x <- unlist(strsplit(x, " "))  # Split manually if needed
+      dose <- suppressWarnings(as.numeric(split_x[length(split_x)]))  # Convert to number
+    } else {
+      dose <- suppressWarnings(as.numeric(x[length(x)]))  # Normal case
+    }
+    ifelse(is.na(dose), NA, dose)  # Return NA if conversion fails
+  })
+
   #
   for (i in seq_len(nrow(B.matrix))) {
     B.matrix[i, treat1[i]] <- 1
     B.matrix[i, treat2[i]] <- -1
   }
   #
-
   for (i in seq_len(nrow(D1))) {
-    D1[i, characters[i]] <- do.call(g1, list(x = values[i]))
-    D2[i, characters[i]] <- do.call(g2, list(x = values[i], p = knots[[characters[i]]]))
+
+    knots1 <- as.numeric(knots[[agent_names[[i]]]])
+
+    D1[i, agent_names[i]] <- do.call(g1, list(x = doses[i]))
+    D2[i, agent_names[i]] <- do.call(g2, list(x = doses[i], p = knots1))
   }
   #
   Xd <- cbind(B.matrix %*% D1, B.matrix %*% D2)
@@ -345,20 +417,13 @@ dose2fp <- function(x, p = -0.5, epsilon = 0.001) {
   }
 }
 
-#  TEST
-# dose2fp <- function(x, p = NULL) {
-#   if (is.null(p)) {
-#    p <- -0.5
-#   }
-#   ifelse(x == 0, 1, x^p)
-# }
-
 dose2exp <- function(x, p = NULL) {
   return(1 - exp(-x))
 }
 
+
 dose2rcs <- function(x, p = NULL) {
-  if (length(unique(p)) == 1) {
+  if (length(unique(p)) == 1 || length(unique(p)) == 2) {
     return(x)
   } else {
     return(rcspline.eval(x, knots = p, inclx = FALSE))
@@ -368,3 +433,5 @@ dose2rcs <- function(x, p = NULL) {
 sel_coef <- function(x, agent, id = 1) {
   x[names(x) %in% agent][id]
 }
+
+

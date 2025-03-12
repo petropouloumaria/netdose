@@ -79,7 +79,7 @@
 #' The function \code{netdose} conducts a dose-response network meta-analysis
 #' with a variety of dose-response functions (such as the linear, exponential,
 #' fractional polynomials and restricted cubic splines) in a frequentist way
-#' as described in Petropoulou et al. (2024).
+#' as described in Petropoulou et al. (2025).
 #'
 #' The following dose-response functions are available:
 #' \itemize{
@@ -208,8 +208,8 @@
 #'
 #' \item{data}{Data frame containing the study information.}
 #'
-#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
-#'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
+#' @author Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
+#'   Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
 #'
 #' @references
 #' Mandema JW, Cox EJ (2005):
@@ -227,7 +227,7 @@
 #' A dose-effect network meta-analysis model: an application in antidepressants.
 #' \emph{Statistical Methods in Medical Research}
 #'
-#' Petropoulou et al. (2024):
+#' Petropoulou et al. (2025):
 #' Network meta-analysis with dose-response relationships.
 #'
 #' @examples
@@ -280,7 +280,7 @@
 #'   method = "rcs"
 #' )
 #'
-#' #' # DR-NMA with RCS dose-response function with knots at 25th, 50th and 100th percentiles
+#' # DR-NMA with RCS dose-response function with knots at 25th, 50th and 100th percentiles
 #' dr_rcs2 <- netdose(TE, seTE, agent1, dose1, agent2,
 #'   dose2, studlab,
 #'   data = dat,
@@ -950,6 +950,12 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   os <- order(ps$order)
   #
   # Standard network meta-analysis (to calculate Q statistic)
+
+  same_elements <- agent1 == agent2
+
+  if (any(same_elements == TRUE)) {
+    Q <- df.Q <- pval.Q <- df.Q.diff <- NA
+  }else{
   #
   if (netconnection(agent1, agent2, ps$studlab[os])$n.subnets == 1) {
     net <- netmeta(ps$TE[os], ps$seTE[os], agent1, agent2, ps$studlab[os],
@@ -966,6 +972,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     df.Q.diff <- 2 * sum(1 / ps$narms[os]) - qr(Xd)$rank
   } else {
     Q <- df.Q <- pval.Q <- df.Q.diff <- NA
+  }
   }
   #
   # Common effects DR-NMA model
@@ -1088,7 +1095,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     #
     reference.group = reference.group,
     #
-    Q.to.df.ratio = res.r$Q.df,
+    Q.to.df.ratio = res.c$Q.df,
     func.inverse = deparse(substitute(func.inverse)),
     #
     backtransf = backtransf,

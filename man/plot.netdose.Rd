@@ -32,7 +32,7 @@ By default, \code{"black"} when \code{only.direct = TRUE}; otherwise, \code{"gre
 \item{col.indirect}{The color used for points representing indirect comparisons.
 Defaults to \code{"red"}.}
 
-\item{\dots}{Additional arguments.  Currently ignored, but included for potential
+\item{\dots}{Additional arguments. Currently ignored, but included for potential
 future extensions or compatibility with generic plotting functions.}
 }
 \description{

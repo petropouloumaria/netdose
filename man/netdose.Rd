@@ -252,7 +252,7 @@ splines (Hamza et al. 2020) in Bayesian framework.
 The function \code{netdose} conducts a dose-response network meta-analysis
 with a variety of dose-response functions (such as the linear, exponential,
 fractional polynomials and restricted cubic splines) in a frequentist way
-as described in Petropoulou et al. (2024).
+as described in Petropoulou et al. (2025).
 
 The following dose-response functions are available:
 \itemize{
@@ -325,7 +325,7 @@ dr_rcs <- netdose(TE, seTE, agent1, dose1, agent2,
   method = "rcs"
 )
 
-#' # DR-NMA with RCS dose-response function with knots at 25th, 50th and 100th percentiles
+# DR-NMA with RCS dose-response function with knots at 25th, 50th and 100th percentiles
 dr_rcs2 <- netdose(TE, seTE, agent1, dose1, agent2,
   dose2, studlab,
   data = dat,
@@ -350,7 +350,7 @@ Hamza T, Furukawa TA, Orsin N, Cipriani A, Iglesias C, Salanti G (2022):
 A dose-effect network meta-analysis model: an application in antidepressants.
 \emph{Statistical Methods in Medical Research}
 
-Petropoulou et al. (2024):
+Petropoulou et al. (2025):
 Network meta-analysis with dose-response relationships.
 }
 \author{
