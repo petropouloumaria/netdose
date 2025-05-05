@@ -10,7 +10,7 @@
 #' @param TE Estimate of treatment effect, i.e. difference between
 #'   first and second treatment (e.g. log odds ratio, mean difference,
 #'   or log hazard ratio). Or an R object created with
-#'   \code{\link{pairwise}}.
+#'   \code{\link[meta]{pairwise}}.
 #' @param seTE Standard error of treatment estimate.
 #' @param agent1 Agents corresponding to the first treatment in each comparison.
 #' @param dose1 Doses for the first treatment in each comparison.
@@ -231,22 +231,19 @@
 #' Network meta-analysis with dose-response relationships.
 #'
 #' @examples
-#' # Load anesthesia data
-#' data(anesthesia)
-#'
 #' # Use a subset of 8 studies
-#' anesthesia_subset <- subset(anesthesia, study %in% unique(anesthesia$study)[1:20])
+#' anesthesia_subset <-
+#'   subset(anesthesia, study %in% unique(anesthesia$study)[1:20])
 #'
 #' # Prepare data for DR-NMA
-#' dat <- meta::pairwise(
+#' dat <- pairwise(
 #'   agent = list(agent1, agent2, agent3, agent4, agent5),
 #'   event = list(event1, event2, event3, event4, event5),
 #'   n = list(n1, n2, n3, n4, n5),
 #'   dose = list(dose1, dose2, dose3, dose4, dose5),
 #'   data = anesthesia_subset,
 #'   studlab = study,
-#'   append = FALSE,
-#'   sm = "RR"
+#'   append = FALSE
 #' )
 #'
 #' # Perform DR-NMA with a linear dose-response function
@@ -257,16 +254,15 @@
 #' )
 #'
 #' \dontrun{
-#'
 #' # DR-NMA with FP1 dose-response function with p = -0.5
-#' FP1 <- netdose(TE, seTE, agent1, dose1, agent2,
+#' dr_fp1 <- netdose(TE, seTE, agent1, dose1, agent2,
 #'   dose2, studlab,
 #'   data = dat,
 #'   method = "fp1"
 #' )
 #'
 #' # DR-NMA with FP1 dose-response function with p = 0.5
-#' FP1_p0.5 <- netdose(TE, seTE, agent1, dose1, agent2,
+#' dr_fp1_p0.5 <- netdose(TE, seTE, agent1, dose1, agent2,
 #'   dose2, studlab,
 #'   data = dat,
 #'   method = "fp1", param = 0.5

@@ -67,7 +67,6 @@
 #'
 #' @examples
 #' \donttest{
-#' data(anesthesia)
 #' # Summarize the dataset
 #' summary(anesthesia)
 #' }

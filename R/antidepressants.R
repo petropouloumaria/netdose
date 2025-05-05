@@ -44,7 +44,6 @@
 #'
 #' @examples
 #' \donttest{
-#' data(antidepressants)
 #' # Summarize the dataset
 #' summary(antidepressants)
 #' }

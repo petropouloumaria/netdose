@@ -7,11 +7,11 @@
 \format{
 A data frame with the following columns:
 \tabular{rl}{
-  \bold{\emph{agent1}} \tab Character vector indicating the name of the anesthetic agent in arm 1. \cr
-  \bold{\emph{agent2}} \tab Character vector indicating the name of the anesthetic agent in arm 2. \cr
-  \bold{\emph{agent3}} \tab Character vector indicating the name of the anesthetic agent in arm 3. \cr
-  \bold{\emph{agent4}} \tab Character vector indicating the name of the anesthetic agent in arm 4. \cr
-  \bold{\emph{agent5}} \tab Character vector indicating the name of the anesthetic agent in arm 5. \cr
+  \bold{\emph{agent1}} \tab Character vector indicating the name of the agent in arm 1. \cr
+  \bold{\emph{agent2}} \tab Character vector indicating the name of the agent in arm 2. \cr
+  \bold{\emph{agent3}} \tab Character vector indicating the name of the agent in arm 3. \cr
+  \bold{\emph{agent4}} \tab Character vector indicating the name of the agent in arm 4. \cr
+  \bold{\emph{agent5}} \tab Character vector indicating the name of the agent in arm 5. \cr
   \bold{\emph{event1}} \tab Integer vector for the number of participants who experienced vomiting in arm 1. \cr
   \bold{\emph{event2}} \tab Integer vector for the number of participants who experienced vomiting in arm 2. \cr
   \bold{\emph{event3}} \tab Integer vector for the number of participants who experienced vomiting in arm 3. \cr
@@ -55,10 +55,10 @@ allows for a more precise evaluation of single-agent dose-response relationships
 
 The dataset is structured in a contrast-based format and includes the following variables:
 \itemize{
-  \item \code{agent1}, \code{agent2}, \code{agent3}, \code{agent4}, \code{agent5}: Names of the anesthetic agents used in each study arm.
+  \item \code{agent1}, \code{agent2}, \code{agent3}, \code{agent4}, \code{agent5}: Names of the agents used in each study arm.
   \item \code{event1}, \code{event2}, \code{event3}, \code{event4}, \code{event5}: Number of participants who experienced vomiting within 24 hours postoperatively in each study arm.
   \item \code{n1}, \code{n2}, \code{n3}, \code{n4}, \code{n5}: Total number of participants in each study arm.
-  \item \code{dose1}, \code{dose2}, \code{dose3}, \code{dose4}, \code{dose5}: Dose levels of the anesthetic agents in each study arm.
+  \item \code{dose1}, \code{dose2}, \code{dose3}, \code{dose4}, \code{dose5}: Dose levels of the agents in each study arm.
   \item \code{studyid}: Unique identifier for the study.
 }
 
@@ -67,7 +67,6 @@ the effects of single agents across various doses.
 }
 \examples{
 \donttest{
-data(anesthesia)
 # Summarize the dataset
 summary(anesthesia)
 }

@@ -55,22 +55,19 @@ This visualization aids in understanding the relationship between dose and
 response while validating the model fit against observed data.
 }
 \examples{
-# Load anesthesia data
-data(anesthesia)
-
 # Use a subset of 8 studies
-anesthesia_subset <- subset(anesthesia, study \%in\% unique(anesthesia$study)[1:20])
+anesthesia_subset <-
+  subset(anesthesia, study \%in\% unique(anesthesia$study)[1:20])
 
 # Prepare data for DR-NMA
-dat <- meta::pairwise(
+dat <- pairwise(
   agent = list(agent1, agent2, agent3, agent4, agent5),
   event = list(event1, event2, event3, event4, event5),
   n = list(n1, n2, n3, n4, n5),
   dose = list(dose1, dose2, dose3, dose4, dose5),
   data = anesthesia_subset,
   studlab = study,
-  append = FALSE,
-  sm = "RR"
+  append = FALSE
 )
 
 # DR-NMA with linear dose-response function

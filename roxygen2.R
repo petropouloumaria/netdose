@@ -1,30 +1,35 @@
-##
-## (1) Make R packages available
-##
+#
+# (1) Make R packages available
+#
+
 library("devtools")
 library("roxygen2")
 
 
-##
-## (2) Create documentation file(s)
-##
+#
+# (2) Create documentation file(s)
+#
+
 document()
 
 
-##
-## (3) Build R package and PDF file with help pages
-##
+#
+# (3) Build R package and PDF file with help pages
+#
+
 build()
 build_manual()
 
 
-##
-## (4) Install R package
-##
+#
+# (4) Install R package
+#
+
 install()
 
 
-##
-## (5) Check R package
-##
+#
+# (5) Check R package
+#
+
 check(args = "--as-cran")

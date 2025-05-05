@@ -45,7 +45,6 @@ the effects of the several agents across various doses.
 }
 \examples{
 \donttest{
-data(antidepressants)
 # Summarize the dataset
 summary(antidepressants)
 }

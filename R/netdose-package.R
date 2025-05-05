@@ -1,6 +1,4 @@
-#' netdose: Brief overview of measures and methodologies for
-#' detection of outlying and influential studies in network
-#' meta-analysis.
+#' netdose: Brief overview of methods
 #'
 #' @description
 #' R package \bold{netdose} provides methods and graphical tools to conduct
@@ -9,9 +7,9 @@
 #' @details
 #' R package \bold{netdose} is a tool to conduct dose-response network meta-analysis
 #' a frequentist way (Petropoulou et al, 2025). The package can implement the dose-response
-#' network meta-analysis model (function (\code{\link{netdose}})); calculate the predicted values of the dose-response
-#' network meta-analysis model (function (\code{\link{predict}})); provide dose-response plots
-#' (function (\code{\link{plot.netdose}})) (Petropoulou et al., 2025).
+#' network meta-analysis model (function \code{\link{netdose}}); calculate the predicted values of the dose-response
+#' network meta-analysis model (function \code{\link{predict}}); provide dose-response plots
+#' (function \code{\link{plot.netdose}}) (Petropoulou et al., 2025).
 #'
 #' Type \code{help(package = "netdose")} for a listing of R functions
 #' available in \bold{netdose}.
