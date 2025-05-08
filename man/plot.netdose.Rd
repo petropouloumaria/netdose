@@ -62,24 +62,29 @@ curves alongside observed responses for easy interpretation of model outputs.
 }
 \details{
 The function plots the dose-response curve alongside the observed responses:
-- The vertical axis represents the dose range, which is defined from 0 to the
-  maximum observed dose, with 100 evenly spaced points generated within this range.
-- The horizontal axis represents the predicted response values, calculated using
-  the \code{predict.netdose} function.
+
+\itemize{
+\item The vertical axis represents the dose range, which is defined from 0
+  to the maximum observed dose, with 100 evenly spaced points generated
+  within this range.
+\item The horizontal axis represents the predicted response values,
+  calculated using the \code{predict.netdose} function.
+}
 
 The plot includes shaded confidence intervals for the predicted dose-response
 curve. Observed responses are overlaid for comparison, differentiated into
 direct and indirect comparisons with customizable colors.
 
-The function also optionally displays the Benchmark Dose (BMD) and the Benchmark Dose
-Lower Confidence Limit (BMDL), based on a user-defined benchmark response threshold
-(e.g., 0.01 for 10 percent increase).
+The function also optionally displays the Benchmark Dose (BMD) and the
+Benchmark Dose Lower Confidence Limit (BMDL), based on a user-defined
+benchmark response threshold (e.g., 0.01 for 10 percent increase).
 
-If the model indicates that the predicted response stabilizes beyond a certain dose level,
-the function estimates and plots the Maximum Effective Dose (MED) — the smallest dose beyond
-which the predicted response increases less than a given threshold (controlled via
-\code{plateau.threshold}). MED is shown only if it occurs after the BMDL, ensuring biological
-and statistical coherence.
+If the model indicates that the predicted response stabilizes beyond a
+certain dose level, the function estimates and plots the Maximum Effective
+Dose (MED) — the smallest dose beyond which the predicted response increases
+less than a given threshold (controlled via \code{plateau.threshold}). MED
+is shown only if it occurs after the BMDL, ensuring biological and
+statistical coherence.
 }
 \examples{
 # Use a subset of 5 studies from anesthesia data

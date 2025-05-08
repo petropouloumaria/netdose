@@ -158,7 +158,7 @@ alphabetic order.}
 
 \item{common.dose}{Common dose value used in the analysis, if specified.}
 
-#' **Common/Random effects model results:**
+**Common/Random effects model results:**
  \item{TE.common, TE.random}{Matrix with overall
   treatment effects estimated by the dose-response (common and random
   effects) model.}
