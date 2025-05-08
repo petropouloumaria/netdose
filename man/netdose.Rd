@@ -276,22 +276,18 @@ is ignored for a linear, exponential or quadratic polynomial dose-response
 relationship.
 }
 \examples{
-# Load anesthesia data
-data(anesthesia)
-
-# Use a subset of 5 studies
+# Use a subset of 5 studies from anesthesia data
 anesthesia_subset <- subset(anesthesia, study \%in\% unique(anesthesia$study)[1:5])
 
 # Prepare data for DR-NMA
-dat <- meta::pairwise(
+dat <- pairwise(
   agent = list(agent1, agent2, agent3),
   event = list(event1, event2, event3),
   n = list(n1, n2, n3),
   dose = list(dose1, dose2, dose3),
   data = anesthesia_subset,
   studlab = study,
-  append = FALSE,
-  sm = "RR"
+  append = FALSE
 )
 
 # Perform DR-NMA with a linear dose-response function
@@ -303,14 +299,14 @@ dr1 <- netdose(
 
 \donttest{
 # DR-NMA with FP1 dose-response function with p = -0.5
-FP1 <- netdose(TE, seTE, agent1, dose1, agent2,
+dr_fp1 <- netdose(TE, seTE, agent1, dose1, agent2,
   dose2, studlab,
   data = dat,
   method = "fp1"
 )
 
 # DR-NMA with FP1 dose-response function with p = 0.5
-FP1_p0.5 <- netdose(TE, seTE, agent1, dose1, agent2,
+dr_fp1_p0.5 <- netdose(TE, seTE, agent1, dose1, agent2,
   dose2, studlab,
   data = dat,
   method = "fp1", param = 0.5

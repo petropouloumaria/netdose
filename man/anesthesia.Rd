@@ -67,7 +67,6 @@ the effects of single agents across various doses.
 }
 \examples{
 \donttest{
-data(anesthesia)
 # Summarize the dataset
 summary(anesthesia)
 }
