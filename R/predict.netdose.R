@@ -38,8 +38,8 @@
 #' \item{upper}{A numeric vector specifying the upper bounds of the predicted values}
 #'
 
-#' @author Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
-#'   Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
+#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
+#'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
 #'
 #' @references
 #' Petropoulou et al. (2025):

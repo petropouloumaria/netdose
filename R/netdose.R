@@ -130,7 +130,7 @@
 #'
 #' \item{common.dose}{Common dose value used in the analysis, if specified.}
 #'
-#' #' **Common/Random effects model results:**
+#' **Common/Random effects model results:**
 #'  \item{TE.common, TE.random}{Matrix with overall
 #'   treatment effects estimated by the dose-response (common and random
 #'   effects) model.}
@@ -208,8 +208,8 @@
 #'
 #' \item{data}{Data frame containing the study information.}
 #'
-#' @author Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
-#'   Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
+#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
+#'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
 #'
 #' @references
 #' Mandema JW, Cox EJ (2005):
