@@ -155,7 +155,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
       dat.i$.dose2[wo] <- tdose1[wo]
     }
     # Active vs active
-    active <- !(dat.i$.agent2 %in% x$inactive | dat.i$dose2 == 1)
+    active <- !(dat.i$.agent2 %in% x$inactive | dat.i$.dose2 == 0)
     #
     pred2.i <- predict(x, agent1 = dat.i$.agent2, dose1 = dat.i$.dose2)
     #
