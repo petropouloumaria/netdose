@@ -13,8 +13,8 @@
   agents = NULL,
   same.ylim = TRUE,
   ylim = NULL,
-  benchmark.threshold = 0.01,
-  plateau.threshold = 1e-04,
+  benchmark.threshold = NA,
+  plateau.threshold = NA,
   ...
 )
 }

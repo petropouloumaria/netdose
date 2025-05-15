@@ -4,7 +4,7 @@
 #' The `netdose` function performs a dose-response network meta-analysis in a frequentist way.
 #' It accepts a dataset with study-level data, constructs a design matrix for the dose-response model,
 #' and computes treatment effects under common and/or random effects models.
-#' The function supports multiple dose-response relationship modeling approaches, including linear,
+#' The function supports multiple dose-response relationship modelling approaches, including linear,
 #' exponential, quadratic, restricted cubic splines (rcs), and fractional polynomial methods (fp1).
 #'
 #' @param TE Estimate of treatment effect, i.e. difference between
@@ -52,15 +52,14 @@
 #' example.
 #' @param tol.multiarm A numeric for the tolerance for consistency of
 #'   treatment estimates in multi-arm studies which are consistent by
-#'   design.
+#'   design (only considered for standard network meta-analysis model).
 #' @param tol.multiarm.se A numeric for the tolerance for consistency
 #'   of standard errors in multi-arm studies which are consistent by
-#'   design. This check is not conducted if the argument is
-#'   \code{NULL}.
+#'   design (only considered for standard network meta-analysis model).
 #' @param details.chkmultiarm A logical indicating whether treatment
 #'   estimates and / or variances of multi-arm studies with
 #'   inconsistent results or negative multi-arm variances should be
-#'   printed.
+#'   printed (only considered for standard network meta-analysis model).
 #' @param keepdata A logical indicating whether original data(set)
 #'   should be kept in netdose object.
 #' @param warn A logical indicating whether warnings should be printed
@@ -163,11 +162,11 @@
 #'   model).}
 #'
 #' **Heterogeneity and goodness-of-fit statistics:**
-#' \item{Q.dose}{Overall heterogeneity / inconsistency statistic for
+#' \item{Q}{Overall heterogeneity / inconsistency statistic for
 #' dose-response network meta-analysis.}
-#' \item{df.Q.dose}{Degrees of freedom for test of heterogeneity /
+#' \item{df.Q}{Degrees of freedom for test of heterogeneity /
 #'   inconsistency for dose-response network meta-analysis.}
-#' \item{pval.Q.dose}{P-value for test of heterogeneity /
+#' \item{pval.Q}{P-value for test of heterogeneity /
 #'   inconsistency for dose-response network meta-analysis.}
 #' \item{tau}{Square-root of between-study variance with DerSimonian
 #' and Laird method for dose-response network meta-analysis.}
@@ -175,18 +174,18 @@
 #'  likelihood method for dose-response network meta-analysis.}
 #' \item{I2, lower.I2, upper.I2}{I-squared, lower and upper confidence
 #'   limits.}
-#' \item{Q.standard}{Overall heterogeneity / inconsistency statistic
+#' \item{Q.lump}{Overall heterogeneity / inconsistency statistic
 #'   (standard model).}
-#' \item{df.Q.standard}{Degrees of freedom for test of heterogeneity /
+#' \item{df.Q.lump}{Degrees of freedom for test of heterogeneity /
 #'   inconsistency (standard model).}
-#' \item{pval.Q.standard}{P-value for test of heterogeneity /
+#' \item{pval.Q.lump}{P-value for test of heterogeneity /
 #'   inconsistency (standard model).}
-#' \item{Q.diff}{Test statistic for difference in goodness of fit
-#'   between standard and dose-response model.}
-#' \item{df.Q.diff}{Degrees of freedom for difference in goodness of
-#'   fit between standard and dose-response model.}
-#' \item{pval.Q.diff}{P-value for difference in goodness of fit
-#'   between standard and additive model.}
+#' \item{Q.split}{Overall heterogeneity / inconsistency statistic
+#'   (standard model).}
+#' \item{df.Q.split}{Degrees of freedom for test of heterogeneity /
+#'   inconsistency (standard model).}
+#' \item{pval.Q.split}{P-value for test of heterogeneity /
+#'   inconsistency (standard model).}
 #'
 #' \item{Xd}{Design matrix for dose-response network meta-analysis.}
 #'
@@ -200,7 +199,7 @@
 #' \item{method}{Method used for the dose-response relationship.}
 #'
 #' \item{reference.group}{Reference agent.}
-#' \item{Q.to.df.ratio}{Q to df ratio, i.e, Q.dose/df.Q.dose.}
+#' \item{Q.to.df.ratio}{Q to df ratio, i.e, Q/df.Q.}
 #' \item{func.inverse}{Function used to calculate the pseudoinverse of
 #' the Laplacian matrix L.}
 #' \item{backtransf}{A logical indicating whether results should be
@@ -337,13 +336,12 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
       "fp1", "fp2"
     ))
   #
-  if (method == "rcs") {
+  if (method == "rcs")
     chknumeric(param)
-  } else if (method == "fp2") {
+  else if (method == "fp2")
     chknumeric(param, length = 2)
-  } else {
+  else
     chknumeric(param, length = 1)
-  }
   #
   chklevel(level)
   chklogical(backtransf)
@@ -380,11 +378,11 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     if (missing.reference.group) {
       missing.reference.group.pairwise <- TRUE
       reference.group <- attr(TE, "reference.group")
-      if (is.null(reference.group)) {
+      #
+      if (is.null(reference.group))
         reference.group <- ""
-      } else {
+      else
         missing.reference.group <- FALSE
-      }
     }
     #
     keep.all.comparisons <- attr(TE, "keep.all.comparisons")
@@ -421,14 +419,14 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     dose2 <- catch("dose2", mc, data, sfsp)
     #
     TE <- TE$TE
-  } else {
+  }
+  else {
     is.pairwise <- FALSE
     if (missing(sm)) {
-      if (!is.null(data) && !is.null(attr(data, "sm"))) {
+      if (!is.null(data) && !is.null(attr(data, "sm")))
         sm <- attr(data, "sm")
-      } else {
+      else
         sm <- ""
-      }
     }
     #
     seTE <- catch("seTE", mc, data, sfsp)
@@ -467,18 +465,16 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   chklength(agent2, k.Comp, "TE")
   chklength(dose2, k.Comp, "TE")
   #
-  if (is.null(studlab)) {
+  if (is.null(studlab))
     studlab <- seq_along(TE)
-  } else {
+  else
     chklength(studlab, k.Comp, "TE")
-  }
   #
-  if (is.factor(agent1)) {
+  if (is.factor(agent1))
     agent1 <- as.character(agent1)
-  }
-  if (is.factor(agent2)) {
+  #
+  if (is.factor(agent2))
     agent2 <- as.character(agent2)
-  }
   #
   # Remove leading and trailing whitespace
   #
@@ -499,17 +495,15 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   subset <- catch("subset", mc, data, sfsp)
   missing.subset <- is.null(subset)
   #
-  if (!is.null(event1) & !is.null(event2)) {
+  if (!is.null(event1) & !is.null(event2))
     available.events <- TRUE
-  } else {
+  else
     available.events <- FALSE
-  }
   #
-  if (!is.null(n1) & !is.null(n2)) {
+  if (!is.null(n1) & !is.null(n2))
     available.n <- TRUE
-  } else {
+  else
     available.n <- FALSE
-  }
   #
   treat1 <- paste(agent1, dose1)
   treat2 <- paste(agent2, dose2)
@@ -524,12 +518,13 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   if (keepdata) {
     if (nulldata & !is.pairwise) {
       data <- data.frame(.studlab = studlab, stringsAsFactors = FALSE)
-    } else if (nulldata & is.pairwise) {
+    }
+    else if (nulldata & is.pairwise) {
       data <- pairdata
       data$.studlab <- studlab
-    } else {
-      data$.studlab <- studlab
     }
+    else
+      data$.studlab <- studlab
     #
     data$.order <- seq_along(studlab)
     #
@@ -584,14 +579,15 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     if (!missing.subset) {
       if (length(subset) == dim(data)[1]) {
         data$.subset <- subset
-      } else {
+      }
+      else {
         data$.subset <- FALSE
         data$.subset[subset] <- TRUE
       }
     }
   }
-
-
+  
+  
   #
   #
   # (3) Use subset for analysis
@@ -649,14 +645,15 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     )
     #
     names(common.dose) <- setchar(names(common.dose), agents)
-  } else {
+  }
+  else {
     by_dose <- by(c(dose1, dose2), c(agent1, agent2), median, na.rm = TRUE)
     #
     common.dose <- as.vector(by_dose)
     names(common.dose) <- names(by_dose)
   }
-
-
+  
+  
   #
   #
   # (4) Additional checks
@@ -858,7 +855,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   if (missing.reference.group | missing.reference.group.pairwise) {
     if (length(inactive) > 0) {
       reference.group <- inactive[1]
-    } else {
+    }
+    else {
       go.on <- TRUE
       i <- 0
       while (go.on) {
@@ -869,7 +867,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
         if (sum(sel.i) > 0) {
           go.on <- FALSE
           reference.group <- labels[i]
-        } else if (i == length(labels)) {
+        }
+        else if (i == length(labels)) {
           go.on <- FALSE
           reference.group <- ""
         }
@@ -892,33 +891,38 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     param <- NULL
     #
     M <- createXd1(agent1, dose1, agent2, dose2, studlab, g = dose2dose)
-  } else if (method == "exponential") {
+  }
+  else if (method == "exponential") {
     param <- NULL
     #
     M <- createXd1(agent1, dose1, agent2, dose2, studlab, g = dose2exp)
-  } else if (method == "fp1") { # fractional polynomial (order 1)
+  }
+  else if (method == "fp1") { # fractional polynomial (order 1)
     if (is.null(param)) {
       param <- -0.5
     }
     #
     M <- createXd1(agent1, dose1, agent2, dose2, studlab,
-      g = dose2fp, param = param
+                   g = dose2fp, param = param
     )
-  } else if (method == "quadratic") { # quadratic polynomial
+  }
+  else if (method == "quadratic") { # quadratic polynomial
     param <- NULL
     #
     M <- createXd2(agent1, dose1, agent2, dose2, studlab,
-      g1 = dose2dose, g2 = dose2poly, param = param
+                   g1 = dose2dose, g2 = dose2poly, param = param
     )
-  } else if (method == "fp2") { # fractional polynomial (order 2)
+  }
+  else if (method == "fp2") { # fractional polynomial (order 2)
     if (is.null(param)) {
       param <- c(-0.5, 1)
     }
     #
     M <- createXd2(agent1, dose1, agent2, dose2, studlab,
-      g1 = dose2fp, g2 = dose2fp, param = param
+                   g1 = dose2fp, g2 = dose2fp, param = param
     )
-  } else if (method == "rcs") { # restricted cubic splines
+  }
+  else if (method == "rcs") { # restricted cubic splines
     if (is.null(param)) { # Harrell's suggestion (fixed sample quantiles)
       param <- c(0.10, 0.50, 0.90)
     }
@@ -929,8 +933,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   Xd <- M$Xd
   D.matrix <- M$D
-
-
+  
+  
   #
   #
   # (6) Conduct DR-NMA
@@ -938,37 +942,54 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
 
   p0 <- prepare(TE, seTE, treat1, treat2, studlab, func.inverse = func.inverse)
-
   ps <- prepare(TE, seTE, agent1, agent2, studlab, func.inverse = func.inverse)
   #
   o <- order(p0$order)
   os <- order(ps$order)
+  
   #
-  # Standard network meta-analysis (to calculate Q statistic)
-
-  same_elements <- agent1 == agent2
-
-  if (any(same_elements == TRUE)) {
-    Q <- df.Q <- pval.Q <- df.Q.diff <- NA
-  }else{
+  # Standard network meta-analysis
   #
-  if (netconnection(agent1, agent2, ps$studlab[os])$n.subnets == 1) {
-    net <- netmeta(ps$TE[os], ps$seTE[os], agent1, agent2, ps$studlab[os],
-      reference.group = reference.group,
-      tol.multiarm = tol.multiarm,
-      tol.multiarm.se = tol.multiarm.se,
-      details.chkmultiarm = details.chkmultiarm
-    )
+  same_agents <- agent1 == agent2
+  #
+  Q.lump <- df.Q.lump <- pval.Q.lump <- NA
+  #
+  Q.split <- df.Q.split <- pval.Q.split <- NA
+  #
+  if (!any(same_agents)) {
     #
-    Q <- net$Q
-    df.Q <- net$df.Q
-    pval.Q <- net$pval.Q
+    # Lumping approach
     #
-    df.Q.diff <- 2 * sum(1 / ps$narms[os]) - qr(Xd)$rank
-  } else {
-    Q <- df.Q <- pval.Q <- df.Q.diff <- NA
+    if (netconnection(agent1, agent2, ps$studlab[os])$n.subnets == 1) {
+      net1 <- netmeta(ps$TE[os], ps$seTE[os], agent1, agent2, ps$studlab[os],
+                      reference.group = reference.group,
+                      tol.multiarm = tol.multiarm,
+                      tol.multiarm.se = tol.multiarm.se,
+                      details.chkmultiarm = details.chkmultiarm
+      )
+      #
+      Q.lump <- net1$Q
+      df.Q.lump <- net1$df.Q
+      pval.Q.lump <- net1$pval.Q
+    }
+    #
+    # Splitting approach
+    #
+    if (netconnection(treat1, treat2, ps$studlab[os])$n.subnets == 1) {
+      net2 <- netmeta(ps$TE[os], ps$seTE[os], treat1, treat2, ps$studlab[os],
+                      reference.group = reference.group,
+                      tol.multiarm = tol.multiarm,
+                      tol.multiarm.se = tol.multiarm.se,
+                      details.chkmultiarm = details.chkmultiarm
+      )
+      #
+      Q.split <- net2$Q
+      df.Q.split <- net2$df.Q
+      pval.Q.split <- net2$pval.Q
+    }
   }
-  }
+  
+  
   #
   # Common effects DR-NMA model
   #
@@ -976,7 +997,6 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     agent1, agent2, p0$treat1[o], p0$treat2[o],
     p0$narms[o],
     Xd = Xd, D.matrix = D.matrix, n = n,
-    Q = Q, df.Q.diff = df.Q.diff,
     level = level, reference = reference.group
   )
   #
@@ -993,7 +1013,6 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     agent1, agent2, p1$treat1[o], p1$treat2[o],
     p1$narms[o],
     Xd = Xd, D.matrix = D.matrix, n = n,
-    Q = NA, df.Q.diff = NA,
     level = level, reference = reference.group
   )
 
@@ -1063,20 +1082,22 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     statistic.drnma.random = res.r$statistic.nma,
     pval.drnma.random = res.r$pval.nma,
     #
-    Q.dose = res.c$Q.dose,
-    df.Q.dose = res.c$df.Q.dose,
-    pval.Q.dose = res.c$pval.Q.dose,
+    Q = res.c$Q,
+    df.Q = res.c$df.Q,
+    pval.Q = res.c$pval.Q,
+    Q.to.df.ratio = res.c$H^2,
+    #
     tau = res.c$tau,
     tauml = res.c$tauML,
     I2 = res.c$I2, lower.I2 = res.c$lower.I2, upper.I2 = res.c$upper.I2,
     #
-    Q.standard = Q,
-    df.Q.standard = df.Q,
-    pval.Q.standard = pval.Q,
+    Q.lump = Q.lump,
+    df.Q.lump = df.Q.lump,
+    pval.Q.lump = pval.Q.lump,
     #
-    Q.diff = res.c$Q.diff,
-    df.Q.diff = df.Q.diff,
-    pval.Q.diff = res.c$pval.Q.diff,
+    Q.split = Q.split,
+    df.Q.split = df.Q.split,
+    pval.Q.split = pval.Q.split,
     #
     Xd = Xd,
     #
@@ -1090,7 +1111,6 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     #
     reference.group = reference.group,
     #
-    Q.to.df.ratio = res.c$Q.df,
     func.inverse = deparse(substitute(func.inverse)),
     #
     backtransf = backtransf,

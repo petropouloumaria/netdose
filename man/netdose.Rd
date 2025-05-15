@@ -106,17 +106,16 @@ example.}
 
 \item{tol.multiarm}{A numeric for the tolerance for consistency of
 treatment estimates in multi-arm studies which are consistent by
-design.}
+design (only considered for standard network meta-analysis model).}
 
 \item{tol.multiarm.se}{A numeric for the tolerance for consistency
 of standard errors in multi-arm studies which are consistent by
-design. This check is not conducted if the argument is
-\code{NULL}.}
+design (only considered for standard network meta-analysis model).}
 
 \item{details.chkmultiarm}{A logical indicating whether treatment
 estimates and / or variances of multi-arm studies with
 inconsistent results or negative multi-arm variances should be
-printed.}
+printed (only considered for standard network meta-analysis model).}
 
 \item{func.inverse}{R function used to calculate the pseudoinverse
 of the Laplacian matrix L.}
@@ -191,11 +190,11 @@ alphabetic order.}
   model).}
 
 **Heterogeneity and goodness-of-fit statistics:**
-\item{Q.dose}{Overall heterogeneity / inconsistency statistic for
+\item{Q}{Overall heterogeneity / inconsistency statistic for
 dose-response network meta-analysis.}
-\item{df.Q.dose}{Degrees of freedom for test of heterogeneity /
+\item{df.Q}{Degrees of freedom for test of heterogeneity /
   inconsistency for dose-response network meta-analysis.}
-\item{pval.Q.dose}{P-value for test of heterogeneity /
+\item{pval.Q}{P-value for test of heterogeneity /
   inconsistency for dose-response network meta-analysis.}
 \item{tau}{Square-root of between-study variance with DerSimonian
 and Laird method for dose-response network meta-analysis.}
@@ -203,18 +202,18 @@ and Laird method for dose-response network meta-analysis.}
  likelihood method for dose-response network meta-analysis.}
 \item{I2, lower.I2, upper.I2}{I-squared, lower and upper confidence
   limits.}
-\item{Q.standard}{Overall heterogeneity / inconsistency statistic
+\item{Q.lump}{Overall heterogeneity / inconsistency statistic
   (standard model).}
-\item{df.Q.standard}{Degrees of freedom for test of heterogeneity /
+\item{df.Q.lump}{Degrees of freedom for test of heterogeneity /
   inconsistency (standard model).}
-\item{pval.Q.standard}{P-value for test of heterogeneity /
+\item{pval.Q.lump}{P-value for test of heterogeneity /
   inconsistency (standard model).}
-\item{Q.diff}{Test statistic for difference in goodness of fit
-  between standard and dose-response model.}
-\item{df.Q.diff}{Degrees of freedom for difference in goodness of
-  fit between standard and dose-response model.}
-\item{pval.Q.diff}{P-value for difference in goodness of fit
-  between standard and additive model.}
+\item{Q.split}{Overall heterogeneity / inconsistency statistic
+  (standard model).}
+\item{df.Q.split}{Degrees of freedom for test of heterogeneity /
+  inconsistency (standard model).}
+\item{pval.Q.split}{P-value for test of heterogeneity /
+  inconsistency (standard model).}
 
 \item{Xd}{Design matrix for dose-response network meta-analysis.}
 
@@ -228,7 +227,7 @@ meta-analysis should be conducted.}
 \item{method}{Method used for the dose-response relationship.}
 
 \item{reference.group}{Reference agent.}
-\item{Q.to.df.ratio}{Q to df ratio, i.e, Q.dose/df.Q.dose.}
+\item{Q.to.df.ratio}{Q to df ratio, i.e, Q/df.Q.}
 \item{func.inverse}{Function used to calculate the pseudoinverse of
 the Laplacian matrix L.}
 \item{backtransf}{A logical indicating whether results should be
@@ -240,7 +239,7 @@ back transformed in printouts and forest plots.}
 The `netdose` function performs a dose-response network meta-analysis in a frequentist way.
 It accepts a dataset with study-level data, constructs a design matrix for the dose-response model,
 and computes treatment effects under common and/or random effects models.
-The function supports multiple dose-response relationship modeling approaches, including linear,
+The function supports multiple dose-response relationship modelling approaches, including linear,
 exponential, quadratic, restricted cubic splines (rcs), and fractional polynomial methods (fp1).
 }
 \details{

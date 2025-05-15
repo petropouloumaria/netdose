@@ -1,4 +1,4 @@
-#'  Dose-response curve plot
+#' Dose-response curve plot
 #'
 #' @description
 #' Generates a dose-response plot based on the results of a dose-response
@@ -97,8 +97,8 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                          agents = NULL,
                          same.ylim = TRUE,
                          ylim = NULL,
-                         benchmark.threshold = 0.01,
-                         plateau.threshold = 0.0001,
+                         benchmark.threshold = NA,
+                         plateau.threshold = NA,
                          ...) {
   # Check class
   chkclass(x, "netdose")
@@ -191,7 +191,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     benchmark_met <- linedata$pred >= benchmark.threshold
     bmdl <- NA 
     
-    if (any(benchmark_met)) {
+    if (!all(is.na(benchmark_met)) && any(benchmark_met)) {
       bmd_index <- which(benchmark_met)[1]
       bmd_dose <- linedata$dose1[bmd_index]
       
