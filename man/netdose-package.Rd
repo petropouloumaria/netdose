@@ -7,14 +7,17 @@
 relationships}
 \description{
 R package \bold{netdose} provides methods and graphical tools to conduct
-the network meta-analysis with dose-response relationships in a frequentist way.
+the network meta-analysis with dose-response relationships in a
+frequentist way.
 }
 \details{
-R package \bold{netdose} is a tool to conduct dose-response network meta-analysis
-a frequentist way (Petropoulou et al, 2025). The package can implement the dose-response
-network meta-analysis model (function \code{\link{netdose}}); calculate the predicted values of the dose-response
-network meta-analysis model (function \code{\link{predict}}); provide dose-response plots
-(function \code{\link{plot.netdose}}) (Petropoulou et al., 2025).
+R package \bold{netdose} is a tool to conduct dose-response network
+meta-analysis a frequentist way (Petropoulou et al, 2025). The package can
+implement the dose-response network meta-analysis model (function
+\code{\link{netdose}}); calculate the predicted values of the dose-response
+network meta-analysis model (function \code{\link{predict}}); provide
+dose-response plots (function \code{\link{plot.netdose}})
+(Petropoulou et al., 2025).
 
 Type \code{help(package = "netdose")} for a listing of R functions
 available in \bold{netdose}.

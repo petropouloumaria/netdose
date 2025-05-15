@@ -28,9 +28,11 @@
 \arguments{
 \item{x}{An object of class \code{netdose}.}
 
-\item{common}{A logical indicating whether results from the common effects model should be printed.}
+\item{common}{A logical indicating whether results from the common effects
+model should be printed.}
 
-\item{random}{A logical indicating whether results from the random effects model should be printed.}
+\item{random}{A logical indicating whether results from the random effects
+model should be printed.}
 
 \item{backtransf}{A logical indicating whether printed results
 should be back transformed. If \code{backtransf = TRUE}, results
@@ -53,7 +55,8 @@ odds ratios, for example.}
 
 \item{digits.I2}{Number of decimal places for I-squared.}
 
-\item{scientific.pval}{A logical indicating whether p-values should be printed in scientific notation.}
+\item{scientific.pval}{A logical indicating whether p-values should be
+printed in scientific notation.}
 
 \item{big.mark}{A character used as thousands separator.}
 
@@ -63,11 +66,12 @@ odds ratios, for example.}
 
 \item{text.I2}{A character string used to label I-squared in the output.}
 
-\item{...}{Additional arguments (ignored).}
+\item{\dots}{Additional arguments (ignored).}
 }
 \value{
 The input object is printed to the console. No return value.
 }
 \description{
-Displays a summary of the dose-response network meta-analysis results stored in a \code{netdose} object.
+Displays a summary of the dose-response network meta-analysis results
+stored in a \code{netdose} object.
 }

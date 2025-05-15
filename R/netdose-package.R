@@ -47,10 +47,11 @@
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_ribbon geom_vline
 #'   labs theme theme_void element_blank element_text element_rect element_line
 #'   annotate scale_color_manual scale_linetype_manual coord_cartesian
-#'   ggplotGrob
+#'   ggplotGrob facet_wrap
 #' @importFrom grid nullGrob unit unit.c
 #' @importFrom gridExtra grid.arrange arrangeGrob
 #' @importFrom rlang sym
+#' @importFrom dplyr %>% mutate
 
 "_PACKAGE"
 

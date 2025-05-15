@@ -32,6 +32,7 @@
 #'   response between adjacent dose levels, below which the response is
 #'   considered stable (i.e., plateau has been reached). Used to calculate the
 #'   Maximum Effective Dose (MED). Default: \code{0.0001}.
+#' @param legend A logical value indicating whether to print a legend.
 #' @param \dots Additional arguments. Currently ignored, but included for
 #'   potential future extensions or compatibility with generic plotting
 #'   functions.
@@ -103,8 +104,9 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                          agents = NULL,
                          same.ylim = TRUE,
                          ylim = NULL,
-                         benchmark.threshold = NA,
-                         plateau.threshold = NA,
+                         benchmark.threshold = NULL,
+                         plateau.threshold = NULL,
+                         legend = !only.direct,
                          ...) {
   # Check class
   chkclass(x, "netdose")
@@ -113,10 +115,19 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
   #
   pooled <- setchar(pooled, c("common", "random"))
   chklogical(only.direct)
-  
+  #
+  if (!is.null(benchmark.threshold))
+    chknumeric(benchmark.threshold, min = 0, zero = TRUE, length = 1)
+  #
+  if (!is.null(plateau.threshold))
+    chknumeric(plateau.threshold, min = 0, zero = TRUE, length = 1)
+  #
+  chklogical(legend)
+    
   # Get rid of warnings "no visible binding for global variable"
   .agent1 <- .agent2 <- dose1 <- TE.adj <-
-    pred <- lower.pred <- upper.pred <- TE <- NULL
+    pred <- lower.pred <- upper.pred <- TE <-
+    bmdl <- med <- type <- NULL
   
   # Coefficients
   if (pooled == "random") {
@@ -133,15 +144,11 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     coef <- coef[names(coef) %in% agents]
   }
   
-  # Create a list to store plots
-  plots_list <- list()
   
-  all_y_vals <- c()
-  
-  has_bmdl_or_med <- FALSE
-  
-  
-  # Loop through each agent and create a plot
+  dat <- preddat <- bmdldat <- meddat <- data.frame()
+  #
+  # Loop through each agent and create data sets
+  #
   for (i in names(coef)) {
     dat.i <- subset(data, .agent1 == i | .agent2 == i)
     # Drop comparisons using the same agent
@@ -166,219 +173,96 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     pred2.i <- predict(x, agent1 = dat.i$.agent2, dose1 = dat.i$.dose2)
     #
     # Data set with observed intervention effects
-    dat.obs <- data.frame(
+    obsdat.i <- data.frame(
+      group = i,
       agent1 = dat.i$.agent1, dose1 = dat.i$.dose1,
       agent2 = dat.i$.agent2, dose2 = dat.i$.dose2,
       TE = dat.i$.TE
-    )
-    # Add predicted effect of second intervention
-    if (!only.direct) {
-      dat.obs$TE.adj <- ifelse(active, dat.obs$TE + pred2.i$pred, dat.obs$TE)
-    }
-    else {
-      dat.obs$TE.adj <- dat.obs$TE
-      dat.obs <- dat.obs[!active, , drop = FALSE]
-    }
-    
-    # Get the line with predicted values
-    seq1 <- seq(0, max(dat.i$.dose1, na.rm = TRUE), length.out = 101)[-1]
-    predline.i <- predict(x, agent1 = i, dose1 = seq1)
+    ) %>%
+      mutate(type = ifelse(active, "Indirect", "Direct"))
     #
-    linedata <- data.frame(
-      dose1 = predline.i$dose1,
-      pred = predline.i$pred,
-      lower.pred = predline.i$lower,
-      upper.pred = predline.i$upper
-    )
-    
-    all_y_vals <- c(all_y_vals, linedata$pred, linedata$lower.pred, linedata$upper.pred, dat.obs$TE.adj)
-    
-    
-    benchmark_met <- linedata$pred >= benchmark.threshold
-    bmdl <- NA 
-    
-    if (!all(is.na(benchmark_met)) && any(benchmark_met)) {
-      bmd_index <- which(benchmark_met)[1]
-      bmd_dose <- linedata$dose1[bmd_index]
-      
-      benchmark_met_l <- linedata$lower.pred >= benchmark.threshold
-      
-      if (any(benchmark_met_l)) {
-        bmd_index_l <- which(benchmark_met_l)[1]
-        bmdl <- linedata$dose1[bmd_index_l]
-      }
-    }
-    
-    # Calculation of Maximum Effective Dose (MED)
-    # 
-    delta <- diff(linedata$pred)
-    plateau.threshold <- 0.0001
-    med_index <- which(abs(delta) < plateau.threshold)[1]
-    med <- if (!is.na(med_index)) linedata$dose1[med_index + 1] else NA
-    
-    
-    # Create plot for the current agent
-    # 
-    plot <- ggplot(linedata, aes(x = dose1, y = pred)) +
-      geom_ribbon(aes(ymin = lower.pred, ymax = upper.pred),
-                  fill = "grey40", alpha = 0.4) +
-      geom_line(color = "blue") +
-      labs(y =  NULL, x = NULL, title = i,
-           color = "Observed data comparisons of agent with the reference") +
-      theme(plot.title = element_text(size = 10),
-            panel.background = element_rect(fill = "white", color = "grey80"),
-            panel.grid.major = element_line(color = "grey85", size = 0.3),
-            panel.grid.minor = element_line(color = "grey90", size = 0.15),
-            plot.background = element_rect(fill = "white", color = NA),
-            legend.position = "bottom",
-            legend.title = element_text(size = 9),
-            legend.text = element_text(size = 8))
-    
-    # Add BMDL to the plot    
-    if (any(benchmark_met == TRUE)  && !is.na(bmdl))  {
-      has_bmdl_or_med <- TRUE
-      plot <- plot +
-        geom_vline(xintercept = bmdl, linetype = "dotted",
-                   color = "purple", size = 0.4) +
-        annotate("text", x = bmdl, y = linedata$lower.pred[bmd_index] - 0.001,
-                 label = paste0(round(bmdl, 3)), angle = 0, size = 2.5,
-                 color = "purple")
-    }
-    
-    # Add MED to the plot
-    if (!is.na(med) && !is.na(bmdl) && med >= bmdl) {
-      has_bmdl_or_med <- TRUE
-      plot <- plot +
-        geom_vline(xintercept = med, linetype = "dotdash", color = "gray40", size = 0.4) +
-        annotate("text",
-                 x = med,
-                 y = linedata$upper.pred[med_index] + 0.001,
-                 label = paste0(round(med, 3)),
-                 angle = 0, size = 2.5, color = "gray40")
-    }
-    
-    if (nrow(dat.obs) > 0) {
-      if (only.direct) {
-        dat.obs$Comparison <- "Direct"
-        plot <- plot +
-          geom_point(data = dat.obs,
-                     aes(x = dose1, y = TE.adj,
-                         color = !!sym("Comparison")), size = 1) +
-          scale_color_manual(values = c("Direct" = col.direct))
-      }
-      else {
-        dat.obs$Comparison <- ifelse(active, "Indirect", "Direct")
-        plot <- plot +
-          geom_point(data = dat.obs,
-                     aes(x = dose1, y = TE.adj,
-                         color = !!sym("Comparison")), size = 1) +
-          scale_color_manual(values = c("Direct" = col.direct,
-                                        "Indirect" = col.indirect))
-      }
-    }
-    plots_list[[i]] <- plot
-  }
-  
-  
-  label = c("BMDL", "MED")
-  # Create dummy data for legend (BMDL and MED)
-  if (has_bmdl_or_med) {
-    vline_legend_df <- data.frame(
-      x = c(1, 2),
-      label = c("BMDL", "MED")
-    )
-    
-    # Dummy plot to extract legend
-    legend_bmd_med <- ggplot() +
-      geom_vline(data = vline_legend_df,
-                 aes(xintercept = x, color = label, linetype = label),
-                 size = 0.6) +
-      scale_color_manual(values = c("BMDL" = "purple", "MED" = "gray40")) +
-      scale_linetype_manual(values = c("BMDL" = "dotted", "MED" = "dotdash")) +
-      theme_void() +
-      theme(legend.position = "bottom",
-            legend.title = element_blank(),
-            legend.text = element_text(size = 9))
-    
-    # Extract only the legend grob
-    g_legend <- ggplotGrob(legend_bmd_med)
-    legend_index <-
-      which(sapply(g_legend$grobs, function(x) x$name) == "guide-box")
-    
-    if (length(legend_index) > 0) {
-      shared_bmd_med_legend <- g_legend$grobs[[legend_index]]
+    # Add predicted effect of second intervention
+    #
+    if (!only.direct) {
+      obsdat.i$TE.adj <- ifelse(active, obsdat.i$TE + pred2.i$pred, obsdat.i$TE)
     }
     else {
-      shared_bmd_med_legend <- nullGrob()
+      obsdat.i$TE.adj <- obsdat.i$TE
+      obsdat.i <- obsdat.i[!active, , drop = FALSE]
     }
-  }
-  else {
-    shared_bmd_med_legend <- nullGrob()
-  }
-  
-  
-  if (!is.null(ylim)) {
-    plots_list <-
-      lapply(plots_list, function(p) p + coord_cartesian(ylim = ylim))
-  }
-  else if (same.ylim) {
-    ylim_global <- range(all_y_vals, na.rm = TRUE)
-    plots_list <-
-      lapply(plots_list, function(p) p + coord_cartesian(ylim = ylim_global))
-  }
-  
-  if (x$method == "fp1") {
-    if (is.null(x$param)) {
-      x$param <- -0.5
-    }
-    method <- paste0("FP1 (p=", x$param, ")")
-  }
-  else if (x$method == "fp2") {
-    if (is.null(x$param)) {
-      x$param <- c(-0.5, 1)
-    }
-    method <- paste0("FP2 (p1=", x$param[1], ", p2=", x$param[2], ")")
-  }
-  else if (x$method == "rcs") {
-    method <- paste0("RCS (p=", paste(x$param, collapse = ", "), ")")
-  }
-  else {
-    method <- paste0(toupper(substring(x$method, 1, 1)), substring(x$method, 2))
-  }
-  
-  
-  legend_plot <- plots_list[[1]] + theme(legend.position = "bottom")
-  
-  g <- ggplotGrob(legend_plot)
-  legend_index <- which(sapply(g$grobs, function(x) x$name) == "guide-box")
-  
-  if (length(legend_index) > 0) {
-    shared_legend <- g$grobs[[legend_index]]
-  }
-  else {
-    shared_legend <- nullGrob() # Empty placeholder grob
-  }
-  
-  plots_nolegend <-
-    lapply(plots_list, function(p) p + theme(legend.position = "none"))
-  
-  plots_grid <- arrangeGrob(
-    grobs = plots_nolegend,
-    ncol = min(3, length(plots_nolegend)),
-    top = paste(method, "dose-response plot"),
-    left = xlab(x$sm, FALSE),
-    bottom = "Dose"
-  )
-  
-  grid.arrange(
-    plots_grid,
-    shared_legend,
-    shared_bmd_med_legend,
-    ncol = 1,
-    heights = unit.c(
-      unit(1, "npc") - unit(3, "lines"),
-      unit(1.5, "lines"),
-      unit(1.5, "lines")
+    #
+    # Get the line with predicted values
+    #
+    seq1 <- seq(0, max(dat.i$.dose1, na.rm = TRUE), length.out = 101)[-1]
+    preddat.i <- predict(x, agent1 = i, dose1 = seq1)
+    #
+    preddat.i <- data.frame(
+      group = i,
+      dose1 = preddat.i$dose1,
+      pred = preddat.i$pred,
+      lower.pred = preddat.i$lower,
+      upper.pred = preddat.i$upper
     )
-  )
+    #
+    # Calculation of Benchmark Dose Lower Confidence Limit (BMDL)
+    #
+    bmdldat.i <- NULL
+    #
+    if (!is.null(benchmark.threshold)) {
+      sel.i <- preddat.i$lower.pred >= benchmark.threshold
+      #
+      if (any(sel.i))
+        bmdldat.i <-
+          data.frame(group = i, bmdl = preddat.i$dose1[which(sel.i)[1]])
+    }
+    #
+    # Calculation of Maximum Effective Dose (MED)
+    #
+    meddat.i <- NULL
+    #
+    sel.med.i <- which(abs(diff(preddat.i$pred)) < plateau.threshold)[1]
+    if (!is.na(sel.med.i))
+      meddat.i <- data.frame(group = i, med = preddat.i$dose1[sel.med.i + 1])
+    #
+    dat <- rbind(dat, obsdat.i)
+    preddat <- rbind(preddat, preddat.i)
+    bmdldat <- rbind(bmdldat, bmdldat.i)
+    meddat <- rbind(meddat, meddat.i)
+  }
+  
+  custom_colors <- c("Direct" = col.direct, "Indirect" = col.indirect)
+  
+  # Create plot
+  # 
+  p <- ggplot(preddat, aes(x = dose1, y = pred)) +
+    geom_ribbon(aes(ymin = lower.pred, ymax = upper.pred),
+                fill = "grey40", alpha = 0.4) +
+    geom_line(color = "blue") +
+    geom_point(data = dat, aes(x = dose1, y = TE.adj, color = type)) +
+    facet_wrap(~ group, scales = "free_x") +
+    scale_color_manual(values = custom_colors) +
+    labs(x = "Dose", y = xlab(x$sm, FALSE),
+         color = "Observed data comparisons of agent with the reference") +
+    theme(plot.title = element_text(size = 10),
+          panel.background = element_rect(fill = "white", color = "grey80"),
+          panel.grid.major = element_line(color = "grey85", size = 0.3),
+          panel.grid.minor = element_line(color = "grey90", size = 0.15),
+          plot.background = element_rect(fill = "white", color = NA))
+  #
+  if (nrow(bmdldat) > 0)
+    p <- p + geom_vline(data = bmdldat, aes(xintercept = bmdl),
+                        linetype = "dotted", color = "purple", size = 0.4)
+  #
+  if (nrow(meddat) > 0)
+    p <- p + geom_vline(data = meddat, aes(xintercept = med),
+                        linetype = "dotdash", color = "gray40", size = 0.4)
+  #
+  if (legend)
+   p <- p + theme(legend.position = "bottom",
+                  legend.title = element_text(size = 9),
+                  legend.text = element_text(size = 8))
+  else
+    p <- p + theme(legend.position = "none")
+  #
+  p
 }

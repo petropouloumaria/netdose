@@ -13,8 +13,9 @@
   agents = NULL,
   same.ylim = TRUE,
   ylim = NULL,
-  benchmark.threshold = NA,
-  plateau.threshold = NA,
+  benchmark.threshold = NULL,
+  plateau.threshold = NULL,
+  legend = !only.direct,
   ...
 )
 }
@@ -32,25 +33,35 @@ of direct comparisons with the reference agent for the observed data should
 be shown in the plot. Defaults to \code{TRUE}.}
 
 \item{col.direct}{The color used for points representing direct comparisons.
-By default, \code{"black"} when \code{only.direct = TRUE}; otherwise, \code{"green"}.}
+By default, \code{"black"} when \code{only.direct = TRUE}; otherwise,
+\code{"green"}.}
 
-\item{col.indirect}{The color used for points representing indirect comparisons.
-Defaults to \code{"red"}.}
+\item{col.indirect}{The color used for points representing indirect
+comparisons. Defaults to \code{"red"}.}
 
-\item{agents}{Optional character vector specifying which agents to include in the plot. If NULL, all agents will be plotted.}
+\item{agents}{Optional character vector specifying which agents to include
+in the plot. If NULL, all agents will be plotted.}
 
-\item{same.ylim}{Logical; if TRUE, all plots will have the same y-axis limits. Default is FALSE.}
+\item{same.ylim}{Logical; if TRUE, all plots will have the same y-axis
+limits. Default is FALSE.}
 
-\item{ylim}{Optional numeric vector of length 2 specifying the y-axis limits. If NULL, limits are determined automatically (or based on "same.ylim" if TRUE).}
+\item{ylim}{Optional numeric vector of length 2 specifying the y-axis limits.
+If NULL, limits are determined automatically.}
 
-\item{benchmark.threshold}{Numeric; benchmark response level (e.g., 0.1 for 10 percent). Used to compute Benchmark Dose Lower Confidence Limit (BMDL).}
+\item{benchmark.threshold}{Numeric; benchmark response level (e.g., 0.1 for
+10 percent). Used to compute Benchmark Dose Lower Confidence Limit (BMDL).}
 
-\item{plateau.threshold}{Numeric; threshold for identifying the plateau in the dose-response
-curve. Defines the minimum absolute change in predicted response between adjacent dose
-levels, below which the response is considered stable (i.e., plateau has been reached).
-Used to calculate the Maximum Effective Dose (MED). Default: \code{0.0001}.}
+\item{plateau.threshold}{Numeric; threshold for identifying the plateau in
+the dose-response curve. Defines the minimum absolute change in predicted
+response between adjacent dose levels, below which the response is
+considered stable (i.e., plateau has been reached). Used to calculate the
+Maximum Effective Dose (MED). Default: \code{0.0001}.}
 
-\item{...}{Additional arguments. Currently ignored, but included for potential future extensions or compatibility with generic plotting functions.}
+\item{legend}{A logical value indicating whether to print a legend.}
+
+\item{\dots}{Additional arguments. Currently ignored, but included for
+potential future extensions or compatibility with generic plotting
+functions.}
 }
 \value{
 No return value, called for side effects (generates a plot).
@@ -88,7 +99,8 @@ statistical coherence.
 }
 \examples{
 # Use a subset of 5 studies from anesthesia data
-anesthesia_subset <- subset(anesthesia, study \%in\% unique(anesthesia$study)[1:5])
+anesthesia_subset <-
+  subset(anesthesia, study \%in\% unique(anesthesia$study)[1:5])
 
 # Prepare data for DR-NMA
 dat <- pairwise(
@@ -100,7 +112,6 @@ dat <- pairwise(
   studlab = study,
   append = FALSE
 )
-
 
 # DR-NMA with linear dose-response function
 dr1 <- netdose(TE, seTE, agent1, dose1, agent2,
