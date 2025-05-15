@@ -4,7 +4,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
                      Xd, D.matrix,
                      n,
                      level, reference) {
-
+  
   m <- length(TE) # number of pairwise comparisons
   a <- length(unique(c(agent1, agent2))) # Number of agents
   #
@@ -23,7 +23,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   Lplus[is_zero(Lplus)] <- 0
   colnames(Lplus) <- colnames(L)
   rownames(Lplus) <- rownames(L)
-
+  
   # R resistance distance (variance) matrix (n x n)
   #
   R <- matrix(0, nrow = a, ncol = a)
@@ -36,7 +36,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   # H matrix
   #
   H <- Xd %*% Lplus %*% t(Xd) %*% W
-
+  
   labels <- colnames(Lplus)
   #
   # beta = dose-response effects for agents
@@ -84,7 +84,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   colnames(delta.all.matrix) <- rownames(delta.all.matrix) <-
     colnames(se.delta.all.matrix) <- rownames(se.delta.all.matrix) <-
     unique(labels)
-
+  
   comparisons <- c(
     list(studlab = studlab, agent1 = agent1, agent2 = agent2),
     ci(delta, se.delta, level = level)
@@ -92,16 +92,16 @@ nma_dose <- function(TE, seTE, weights, studlab,
   #
   #
   all.comparisons <- ci(delta.all.matrix, se.delta.all.matrix,
-    level = level
+                        level = level
   )
   #
   # Test of total heterogeneity / inconsistency:
   #
   Q <- as.vector(t(delta - TE) %*% W %*% (delta - TE))
-
+  
   as.vector(t(delta - TE) %*% W %*% (delta - TE))
   as.vector(t(TE - delta) %*% W %*% (TE - delta))
-
+  
   df.Q <- df1 - qr(Xd)$rank
   #
   pval.Q <- pvalQ(Q, df.Q)
@@ -125,7 +125,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
     upper.I2 <- NA
   } else {
     tau2 <- max(0, (Q - df.Q) /
-      sum(diag((I - H) %*% (Xd %*% t(Xd) * E / 2) %*% W)))
+                  sum(diag((I - H) %*% (Xd %*% t(Xd) * E / 2) %*% W)))
     #
     tau <- sqrt(tau2)
     #
@@ -166,7 +166,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
     m = m,
     a = a
   )
-
+  
   res
 }
 

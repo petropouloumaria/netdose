@@ -15,19 +15,26 @@
 #'   of direct comparisons with the reference agent for the observed data should
 #'   be shown in the plot. Defaults to \code{TRUE}.
 #' @param col.direct The color used for points representing direct comparisons.
-#'   By default, \code{"black"} when \code{only.direct = TRUE}; otherwise, \code{"green"}.
-#' @param col.indirect The color used for points representing indirect comparisons.
-#'   Defaults to \code{"red"}.
-#' @param agents Optional character vector specifying which agents to include in the plot. If NULL, all agents will be plotted.
-#' @param same.ylim Logical; if TRUE, all plots will have the same y-axis limits. Default is FALSE.
-#' @param ylim Optional numeric vector of length 2 specifying the y-axis limits. If NULL, limits are determined automatically (or based on "same.ylim" if TRUE).
-#' @param benchmark.threshold Numeric; benchmark response level (e.g., 0.1 for 10 percent). Used to compute Benchmark Dose Lower Confidence Limit (BMDL).
-#' @param plateau.threshold Numeric; threshold for identifying the plateau in the dose-response
-#'   curve. Defines the minimum absolute change in predicted response between adjacent dose
-#'   levels, below which the response is considered stable (i.e., plateau has been reached).
-#'   Used to calculate the Maximum Effective Dose (MED). Default: \code{0.0001}.
-#' @param ... Additional arguments. Currently ignored, but included for potential future extensions or compatibility with generic plotting functions.
-#'
+#'   By default, \code{"black"} when \code{only.direct = TRUE}; otherwise,
+#'   \code{"green"}.
+#' @param col.indirect The color used for points representing indirect
+#'   comparisons. Defaults to \code{"red"}.
+#' @param agents Optional character vector specifying which agents to include
+#'   in the plot. If NULL, all agents will be plotted.
+#' @param ylim Optional numeric vector of length 2 specifying the y-axis limits.
+#'   If NULL, limits are determined automatically.
+#' @param same.ylim Logical; if TRUE, all plots will have the same y-axis
+#'   limits. Default is FALSE.
+#' @param benchmark.threshold Numeric; benchmark response level (e.g., 0.1 for
+#'   10 percent). Used to compute Benchmark Dose Lower Confidence Limit (BMDL).
+#' @param plateau.threshold Numeric; threshold for identifying the plateau in
+#'   the dose-response curve. Defines the minimum absolute change in predicted
+#'   response between adjacent dose levels, below which the response is
+#'   considered stable (i.e., plateau has been reached). Used to calculate the
+#'   Maximum Effective Dose (MED). Default: \code{0.0001}.
+#' @param \dots Additional arguments. Currently ignored, but included for
+#'   potential future extensions or compatibility with generic plotting
+#'   functions.
 #'
 #' @details
 #' The function plots the dose-response curve alongside the observed responses:
@@ -39,7 +46,7 @@
 #' \item The horizontal axis represents the predicted response values,
 #'   calculated using the \code{predict.netdose} function.
 #' }
-#'
+#' 
 #' The plot includes shaded confidence intervals for the predicted dose-response
 #' curve. Observed responses are overlaid for comparison, differentiated into
 #' direct and indirect comparisons with customizable colors.
@@ -62,7 +69,8 @@
 #'
 #' @examples
 #' # Use a subset of 5 studies from anesthesia data
-#' anesthesia_subset <- subset(anesthesia, study %in% unique(anesthesia$study)[1:5])
+#' anesthesia_subset <-
+#'   subset(anesthesia, study %in% unique(anesthesia$study)[1:5])
 #' 
 #' # Prepare data for DR-NMA
 #' dat <- pairwise(
@@ -75,7 +83,6 @@
 #'   append = FALSE
 #' )
 #' 
-#'
 #' # DR-NMA with linear dose-response function
 #' dr1 <- netdose(TE, seTE, agent1, dose1, agent2,
 #'   dose2, studlab,
@@ -88,7 +95,6 @@
 #' @return No return value, called for side effects (generates a plot).
 #' @method plot netdose
 #' @export
-#'
 
 plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                          only.direct = TRUE,

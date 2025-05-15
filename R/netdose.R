@@ -1,11 +1,13 @@
 #' Network meta-analysis with dose-response relationships
 #'
 #' @description
-#' The `netdose` function performs a dose-response network meta-analysis in a frequentist way.
-#' It accepts a dataset with study-level data, constructs a design matrix for the dose-response model,
-#' and computes treatment effects under common and/or random effects models.
-#' The function supports multiple dose-response relationship modelling approaches, including linear,
-#' exponential, quadratic, restricted cubic splines (rcs), and fractional polynomial methods (fp1).
+#' The `netdose` function performs a dose-response network meta-analysis in a
+#' frequentist way. It accepts a dataset with study-level data, constructs a
+#' design matrix for the dose-response model, and computes treatment effects
+#' under the common and random effects models. The function supports multiple
+#' dose-response relationship modelling approaches, including linear,
+#' exponential, quadratic, restricted cubic splines (rcs), and fractional
+#' polynomials (fp1, fp2).
 #'
 #' @param TE Estimate of treatment effect, i.e. difference between
 #'   first and second treatment (e.g. log odds ratio, mean difference,
@@ -14,23 +16,28 @@
 #' @param seTE Standard error of treatment estimate.
 #' @param agent1 Agents corresponding to the first treatment in each comparison.
 #' @param dose1 Doses for the first treatment in each comparison.
-#' @param agent2 Agents corresponding to the second treatment in each comparison.
+#' @param agent2 Agents corresponding to the second treatment in each
+#'   comparison.
 #' @param dose2 Doses for the second treatment in each comparison.
 #' @param studlab An optional - but important! - vector with study labels.
 #' @param data An optional data frame containing the study information.
 #' @param subset An optional vector specifying a subset of studies to
 #'   be used. The default is `NULL`.
-#' @param n1 Numeric. Optional. Sample sizes for the first treatment in each comparison.
-#' @param n2 Numeric. Optional. Sample sizes for the second treatment in each comparison.
-#' @param event1 Numeric. Optional. Number of events for the first treatment in each comparison.
-#' @param event2 Numeric. Optional. Number of events for the second treatment in each comparison.
+#' @param n1 Numeric. Optional. Sample sizes for the first treatment in
+#'   each comparison.
+#' @param n2 Numeric. Optional. Sample sizes for the second treatment in
+#'   each comparison.
+#' @param event1 Numeric. Optional. Number of events for the first treatment
+#'   in each comparison.
+#' @param event2 Numeric. Optional. Number of events for the second treatment
+#'   in each comparison.
 #' @param sm  A character string indicating underlying summary measure,
 #'   e.g., \code{"RD"}, \code{"RR"}, \code{"OR"}, \code{"ASD"},
 #'   \code{"HR"}, \code{"MD"}, \code{"SMD"}, or \code{"ROM"}.
-#' @param common A logical indicating whether a common effects dose-response network
-#'   meta-analysis should be conducted. The default is `TRUE`.
-#' @param random A logical indicating whether a random effects dose-response network
-#'   meta-analysis should be conducted. The default is `TRUE`.
+#' @param common A logical indicating whether a common effects dose-response
+#'   network meta-analysis should be conducted. The default is \code{TRUE}.
+#' @param random A logical indicating whether a random effects dose-response
+#'   network meta-analysis should be conducted. The default is \code{TRUE}.
 #' @param tau.preset An optional value for the square-root of the
 #'   between-study variance \eqn{\tau^2}.
 #' @param method An optional character string specifying the method to
@@ -67,13 +74,12 @@
 #'   standard errors).
 #' @param func.inverse R function used to calculate the pseudoinverse
 #'   of the Laplacian matrix L.
-#' @param ... Additional arguments (to catch deprecated arguments).
 #'
 #' @details
 #' The dose-response network meta-analysis (DR-NMA) has been implemented
 #' by modelling different dose-response functions, as described by
 #' Mandema et al. 2005 and Mawdsley et al. 2016 and by using restricted cubic
-#' splines (Hamza et al. 2020) in Bayesian framework.
+#' splines (Hamza et al. 2024) in a Bayesian setting.
 #'
 #' The function \code{netdose} conducts a dose-response network meta-analysis
 #' with a variety of dose-response functions (such as the linear, exponential,
@@ -84,7 +90,8 @@
 #' \itemize{
 #' \item Linear dose-response relationship (\code{method = "linear"})
 #' \item Exponential dose-response relationship (\code{method = "exponential"})
-#' \item Quadratic polynomial dose-response relationship (\code{method = "quadratic"})
+#' \item Quadratic polynomial dose-response relationship
+#'   (\code{method = "quadratic"})
 #' \item Restricted cubic splines (\code{method = "rcs"})
 #' \item Fractional polynomial (order 1) (\code{method = "fp1"})
 #' \item Fractional polynomial (order 2) (\code{method = "fp2"})
@@ -105,8 +112,10 @@
 #' An object of class \code{netdose}; a list containing the
 #' following components:
 #' \item{studlab}{Study labels.}
-#' \item{agent1}{Label/Agents corresponding to the first treatment in each comparison..}
-#' \item{agent2}{Label/Agents corresponding to the second treatment in each comparison..}
+#' \item{agent1}{Label/Agents corresponding to the first treatment in each
+#'   comparison.}
+#' \item{agent2}{Label/Agents corresponding to the second treatment in each
+#'   comparison.}
 #' \item{dose1}{Doses for the first treatment in each comparison.}
 #' \item{dose2}{Doses for the second treatment in each comparison.}
 #' \item{treat1}{Label/First treatment in each comparison.}
@@ -149,13 +158,13 @@
 #' \item{seTE.drnma.common, seTE.drnma.random}{A vector with corresponding
 #'   standard errors (common and random effects model).}
 #' \item{lower.drnma.common, lower.drnma.random}{A vector with lower
-#'   confidence limits for dose-response treatment estimates (common and random effects
-#'   model).}
+#'   confidence limits for dose-response treatment estimates (common and
+#'   random effects model).}
 #' \item{upper.drnma.common, upper.drnma.random}{A vector with upper
-#'  confidence limits for dose-response treatment estimates (common and random effects
-#'   model).}
+#'  confidence limits for dose-response treatment estimates (common and
+#'  random effects model).}
 #' \item{statistic.drnma.common, statistic.drnma.random}{A vector with
-#'  z-values for the overall dose-response effects (common and random
+#'   z-values for the overall dose-response effects (common and random
 #'   effects model).}
 #' \item{pval.drnma.common, pval.drnma.random}{A vector with p-values for
 #'   the overall dose-response effects (common and random effects
@@ -163,47 +172,47 @@
 #'
 #' **Heterogeneity and goodness-of-fit statistics:**
 #' \item{Q}{Overall heterogeneity / inconsistency statistic for
-#' dose-response network meta-analysis.}
+#'   dose-response network meta-analysis.}
 #' \item{df.Q}{Degrees of freedom for test of heterogeneity /
 #'   inconsistency for dose-response network meta-analysis.}
 #' \item{pval.Q}{P-value for test of heterogeneity /
 #'   inconsistency for dose-response network meta-analysis.}
 #' \item{tau}{Square-root of between-study variance with DerSimonian
-#' and Laird method for dose-response network meta-analysis.}
+#'   and Laird method for dose-response network meta-analysis.}
 #' \item{tauml}{Square-root of between-study variance with Maximum
-#'  likelihood method for dose-response network meta-analysis.}
+#'   likelihood method for dose-response network meta-analysis.}
 #' \item{I2, lower.I2, upper.I2}{I-squared, lower and upper confidence
 #'   limits.}
 #' \item{Q.lump}{Overall heterogeneity / inconsistency statistic
-#'   (standard model).}
+#'   (NMA, lumping approach).}
 #' \item{df.Q.lump}{Degrees of freedom for test of heterogeneity /
-#'   inconsistency (standard model).}
+#'   inconsistency (NMA, lumping approach).}
 #' \item{pval.Q.lump}{P-value for test of heterogeneity /
-#'   inconsistency (standard model).}
+#'   inconsistency (NMA, lumping approach).}
 #' \item{Q.split}{Overall heterogeneity / inconsistency statistic
-#'   (standard model).}
+#'   (NMA, splitting approach).}
 #' \item{df.Q.split}{Degrees of freedom for test of heterogeneity /
-#'   inconsistency (standard model).}
+#'   inconsistency (NMA, splitting approach).}
 #' \item{pval.Q.split}{P-value for test of heterogeneity /
-#'   inconsistency (standard model).}
+#'   inconsistency (NMA, splitting approach).}
 #'
 #' \item{Xd}{Design matrix for dose-response network meta-analysis.}
 #'
 #' \item{sm}{Summary measure used in the analysis.}
 #' \item{level}{Level used to calculate confidence intervals for
-#'  individual comparisons.}
-#' \item{common}{A logical indicating whether a common effects dose-response network
-#'  meta-analysis should be conducted.}
-#' \item{random}{A logical indicating whether a random effects dose-response network
-#' meta-analysis should be conducted.}
+#'   individual comparisons.}
+#' \item{common}{A logical indicating whether a common effects dose-response
+#'   network meta-analysis should be conducted.}
+#' \item{random}{A logical indicating whether a random effects dose-response
+#'   network meta-analysis should be conducted.}
 #' \item{method}{Method used for the dose-response relationship.}
 #'
 #' \item{reference.group}{Reference agent.}
 #' \item{Q.to.df.ratio}{Q to df ratio, i.e, Q/df.Q.}
 #' \item{func.inverse}{Function used to calculate the pseudoinverse of
-#' the Laplacian matrix L.}
+#'   the Laplacian matrix L.}
 #' \item{backtransf}{A logical indicating whether results should be
-#' back transformed in printouts and forest plots.}
+#'   back transformed in printouts and forest plots.}
 #'
 #' \item{data}{Data frame containing the study information.}
 #'
@@ -212,26 +221,31 @@
 #'
 #' @references
 #' Mandema JW, Cox EJ (2005):
-#' Therapeutic benefit of eletriptan compared to sumatriptan for the acute relief
-#' of migraine pain--results of a model-based meta-analysis that accounts for encapsulation.
+#' Therapeutic benefit of eletriptan compared to sumatriptan for the acute
+#' relief of migraine pain--results of a model-based meta-analysis that accounts
+#' for encapsulation.
 #' \emph{Cephalalgia},
-#' \bold{25}, 715-725
+#' \bold{25}, 715--25
 #'
 #' Mawdsley D, Bennetts M, Dias S, Boucher M, Welton N (2016):
-#' Model-Based Network Meta-Analysis: A Framework for Evidence Synthesis of Clinical Trial Data.
+#' Model-Based Network Meta-Analysis: A Framework for Evidence Synthesis of
+#' Clinical Trial Data.
 #' \emph{PT Pharmacometrics & Systems Pharmacology},
-#' \bold{5}, 393-401
+#' \bold{5}, 393--401
 #'
-#' Hamza T, Furukawa TA, Orsin N, Cipriani A, Iglesias C, Salanti G (2022):
-#' A dose-effect network meta-analysis model: an application in antidepressants.
-#' \emph{Statistical Methods in Medical Research}
+#' Hamza T, Furukawa TA, Orsin N, Cipriani A, Iglesias CP, Salanti G (2024):
+#' A dose-effect network meta-analysis model with application in antidepressants
+#' using restricted cubic splines.
+#' \emph{Statistical Methods in Medical Research},
+#' \bold{33}, 1461--72
 #'
 #' Petropoulou et al. (2025):
 #' Network meta-analysis with dose-response relationships.
 #'
 #' @examples
 #' # Use a subset of 5 studies from anesthesia data
-#' anesthesia_subset <- subset(anesthesia, study %in% unique(anesthesia$study)[1:5])
+#' anesthesia_subset <-
+#'   subset(anesthesia, study %in% unique(anesthesia$study)[1:5])
 #'
 #' # Prepare data for DR-NMA
 #' dat <- pairwise(
@@ -266,7 +280,6 @@
 #'   method = "fp1", param = 0.5
 #' )
 #'
-#'
 #' # DR-NMA with RCS dose-response function with knots at 10th, 50th and 90th percentiles
 #' dr_rcs <- netdose(TE, seTE, agent1, dose1, agent2,
 #'   dose2, studlab,
@@ -283,8 +296,6 @@
 #' }
 #'
 #' @export netdose
-
-
 
 netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
                     data = NULL, subset = NULL,
@@ -315,9 +326,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
                     #
                     keepdata = gs("keepdata"),
                     #
-                    warn = TRUE,
-                    #
-                    ...) {
+                    warn = TRUE) {
   #
   #
   # (1) Check arguments
@@ -354,14 +363,14 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   chklogical(keepdata)
   chklogical(warn)
-
-
+  
+  
   #
   #
   # (2) Read data
   #
   #
-
+  
   nulldata <- is.null(data)
   sfsp <- sys.frame(sys.parent())
   mc <- match.call()
@@ -388,8 +397,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     keep.all.comparisons <- attr(TE, "keep.all.comparisons")
     if (!is.null(keep.all.comparisons) && !keep.all.comparisons) {
       stop("First argument is a pairwise object created with ",
-        "'keep.all.comparisons = FALSE'.",
-        call. = TRUE
+           "'keep.all.comparisons = FALSE'.",
+           call. = TRUE
       )
     }
     #
@@ -451,9 +460,9 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   if (!any(!is.na(TE) & !is.na(seTE))) {
     stop("Missing data for estimates (argument 'TE') and ",
-      "standard errors (argument 'seTE') in all studies.\n  ",
-      "No network meta-analysis possible.",
-      call. = FALSE
+         "standard errors (argument 'seTE') in all studies.\n  ",
+         "No network meta-analysis possible.",
+         call. = FALSE
     )
   }
   #
@@ -484,8 +493,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   if (length(studlab) == 0) {
     if (warn) {
       warning("No information given for argument 'studlab'. ",
-        "Assuming that comparisons are from independent studies.",
-        call. = FALSE
+              "Assuming that comparisons are from independent studies.",
+              call. = FALSE
       )
     }
     studlab <- seq(along = TE)
@@ -507,8 +516,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   treat1 <- paste(agent1, dose1)
   treat2 <- paste(agent2, dose2)
-
-
+  
+  
   #
   #
   # (2b) Store complete dataset in list object data
@@ -595,9 +604,9 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   if (!missing.subset) {
     if ((is.logical(subset) & (sum(subset) > k.Comp)) ||
-      (length(subset) > k.Comp)) {
+        (length(subset) > k.Comp)) {
       stop("Length of subset is larger than number of studies.",
-        call. = FALSE
+           call. = FALSE
       )
     }
     #
@@ -636,12 +645,12 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   if (!is.null(common.dose)) {
     chklength(common.dose, length(agents),
-      text =
-        paste(
-          "Argument 'common.dose' must be a named vector of",
-          "length", length(agents),
-          "(number of agents in network)."
-        )
+              text =
+                paste(
+                  "Argument 'common.dose' must be a named vector of",
+                  "length", length(agents),
+                  "(number of agents in network)."
+                )
     )
     #
     names(common.dose) <- setchar(names(common.dose), agents)
@@ -659,10 +668,10 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   # (4) Additional checks
   #
   #
-
+  
   if (any(agent1 == agent2 & dose1 == dose2)) {
     stop("Same combination of agent and dose in at least one comparison.",
-      call. = FALSE
+         call. = FALSE
     )
   }
   #
@@ -687,21 +696,21 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     )
     if (warn) {
       warning("Comparison",
-        if (sum(excl) > 1) "s",
-        " with missing TE / seTE or zero seTE not considered ",
-        "in network meta-analysis.",
-        call. = FALSE
+              if (sum(excl) > 1) "s",
+              " with missing TE / seTE or zero seTE not considered ",
+              "in network meta-analysis.",
+              call. = FALSE
       )
     }
     if (warn) {
       cat("Comparison",
-        if (sum(excl) > 1) "s",
-        " not considered in network meta-analysis:\n",
-        sep = ""
+          if (sum(excl) > 1) "s",
+          " not considered in network meta-analysis:\n",
+          sep = ""
       )
       prmatrix(dat.NAs,
-        quote = FALSE, right = TRUE,
-        rowlab = rep("", sum(excl))
+               quote = FALSE, right = TRUE,
+               rowlab = rep("", sum(excl))
       )
       cat("\n")
     }
@@ -751,21 +760,21 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     )
     if (warn) {
       warning("Comparison",
-        if (sum(excl) > 1) "s",
-        " with missing dose information not considered ",
-        "in network meta-analysis.",
-        call. = FALSE
+              if (sum(excl) > 1) "s",
+              " with missing dose information not considered ",
+              "in network meta-analysis.",
+              call. = FALSE
       )
     }
     if (warn) {
       cat("Comparison",
-        if (sum(excl) > 1) "s",
-        " not considered in network meta-analysis:\n",
-        sep = ""
+          if (sum(excl) > 1) "s",
+          " not considered in network meta-analysis:\n",
+          sep = ""
       )
       prmatrix(dat.NAs,
-        quote = FALSE, right = TRUE,
-        rowlab = rep("", sum(excl))
+               quote = FALSE, right = TRUE,
+               rowlab = rep("", sum(excl))
       )
       cat("\n")
     }
@@ -841,10 +850,10 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   if (n.ai > 0) {
     stop("The following agent",
-      if (n.ai > 1) "s have " else " has ",
-      "doses equal to zero and larger than zero: ",
-      paste0("'", active_and_inactive, "'", collapse = ", "),
-      call. = FALSE
+         if (n.ai > 1) "s have " else " has ",
+         "doses equal to zero and larger than zero: ",
+         paste0("'", active_and_inactive, "'", collapse = ", "),
+         call. = FALSE
     )
   }
   #
@@ -863,7 +872,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
         i <- i + 1
         sel.i <-
           !is.na(TE) & !is.na(seTE) &
-            (agent1 == labels[i] | agent2 == labels[i])
+          (agent1 == labels[i] | agent2 == labels[i])
         if (sum(sel.i) > 0) {
           go.on <- FALSE
           reference.group <- labels[i]
@@ -879,14 +888,14 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   if (reference.group != "") {
     reference.group <- setref(reference.group, labels)
   }
-
-
+  
+  
   #
   #
   # (5) Create design matrix Xd.matrix
   #
   #
-
+  
   if (method == "linear") {
     param <- NULL
     #
@@ -940,7 +949,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   # (6) Conduct DR-NMA
   #
   #
-
+  
   p0 <- prepare(TE, seTE, treat1, treat2, studlab, func.inverse = func.inverse)
   ps <- prepare(TE, seTE, agent1, agent2, studlab, func.inverse = func.inverse)
   #
@@ -994,10 +1003,10 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   # Common effects DR-NMA model
   #
   res.c <- nma_dose(p0$TE[o], p0$seTE[o], p0$weights[o], p0$studlab[o],
-    agent1, agent2, p0$treat1[o], p0$treat2[o],
-    p0$narms[o],
-    Xd = Xd, D.matrix = D.matrix, n = n,
-    level = level, reference = reference.group
+                    agent1, agent2, p0$treat1[o], p0$treat2[o],
+                    p0$narms[o],
+                    Xd = Xd, D.matrix = D.matrix, n = n,
+                    level = level, reference = reference.group
   )
   #
   # Random effects DR-NMA model
@@ -1010,19 +1019,19 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   )
   #
   res.r <- nma_dose(p1$TE[o], p1$seTE[o], p1$weights[o], p1$studlab[o],
-    agent1, agent2, p1$treat1[o], p1$treat2[o],
-    p1$narms[o],
-    Xd = Xd, D.matrix = D.matrix, n = n,
-    level = level, reference = reference.group
+                    agent1, agent2, p1$treat1[o], p1$treat2[o],
+                    p1$narms[o],
+                    Xd = Xd, D.matrix = D.matrix, n = n,
+                    level = level, reference = reference.group
   )
-
-
+  
+  
   #
   #
   # (6) Generate DR-NMA object
   #
   #
-
+  
   res <- list(
     studlab = studlab,
     agent1 = agent1,

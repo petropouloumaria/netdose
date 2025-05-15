@@ -1,7 +1,7 @@
 setseq <- function(seq, levs, text, equal.length = TRUE) {
   name <- deparse(substitute(seq))
   if (missing(text))
-      text <- paste0("Argument '", name, "'")
+    text <- paste0("Argument '", name, "'")
   ##
   if (length(levs) != length(seq) & equal.length)
     stop("Length of argument '", name,

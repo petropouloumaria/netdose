@@ -1,11 +1,14 @@
 #' Print method for objects of class \code{netdose}
 #'
 #' @description
-#' Displays a summary of the dose-response network meta-analysis results stored in a \code{netdose} object.
+#' Displays a summary of the dose-response network meta-analysis results
+#' stored in a \code{netdose} object.
 #'
 #' @param x An object of class \code{netdose}.
-#' @param common A logical indicating whether results from the common effects model should be printed.
-#' @param random A logical indicating whether results from the random effects model should be printed.
+#' @param common A logical indicating whether results from the common effects
+#'   model should be printed.
+#' @param random A logical indicating whether results from the random effects
+#'   model should be printed.
 #' @param backtransf A logical indicating whether printed results
 #'   should be back transformed. If \code{backtransf = TRUE}, results
 #'   for \code{sm = "OR"} are printed as odds ratios rather than log
@@ -18,19 +21,18 @@
 #' @param digits.tau2 Number of decimal places for tau-squared.
 #' @param digits.tau Number of decimal places for tau.
 #' @param digits.I2 Number of decimal places for I-squared.
-#' @param scientific.pval A logical indicating whether p-values should be printed in scientific notation.
+#' @param scientific.pval A logical indicating whether p-values should be
+#'   printed in scientific notation.
 #' @param big.mark A character used as thousands separator.
 #' @param text.tau2 A character string used to label tau-squared in the output.
 #' @param text.tau A character string used to label tau in the output.
 #' @param text.I2 A character string used to label I-squared in the output.
-#' @param ... Additional arguments (ignored).
+#' @param \dots Additional arguments (ignored).
 #'
 #' @return The input object is printed to the console. No return value.
 #'
 #' @method print netdose
 #' @export
-
-
 
 print.netdose <- function(x,
                           common = x$common,

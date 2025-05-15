@@ -1,6 +1,6 @@
 setref <- function(reference.group, levs, length = 1,
                    varname = "reference.group", error.text) {
-
+  
   if (missing(error.text)) {
     text.start <- paste0("Argument '", varname, "'")
     text.within <- paste0("argument '", varname, "'")
