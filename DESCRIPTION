@@ -3,7 +3,7 @@ Title: Dose-Response Network Meta-Analysis in a Frequentist Way
 Version: 0.7-0
 Date: 2025-05-15
 Depends: R (>= 4.4.0), netmeta (>= 3.1.1)
-Imports: MASS, Hmisc, meta, ggplot2, gridExtra, grid, Matrix, rlang, dplyr
+Imports: MASS, Hmisc, meta, ggplot2, Matrix, dplyr
 Authors@R: c(person("Maria", "Petropoulou",
                     role = c("aut", "cre"),
                     email = "maria.petropoulou@uniklinik-freiburg.de",

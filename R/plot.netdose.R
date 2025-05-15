@@ -32,6 +32,9 @@
 #'   response between adjacent dose levels, below which the response is
 #'   considered stable (i.e., plateau has been reached). Used to calculate the
 #'   Maximum Effective Dose (MED). Default: \code{0.0001}.
+#' @param col.line Colour for the dose-response line.
+#' @param col.bmdl Colour for the BMLD line.
+#' @param col.med Colour for the MED line.
 #' @param legend A logical value indicating whether to print a legend.
 #' @param \dots Additional arguments. Currently ignored, but included for
 #'   potential future extensions or compatibility with generic plotting
@@ -106,6 +109,9 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                          ylim = NULL,
                          benchmark.threshold = NULL,
                          plateau.threshold = NULL,
+                         col.line = "blue",
+                         col.bmdl = "purple",
+                         col.med = "gray40",
                          legend = !only.direct,
                          ...) {
   # Check class
@@ -122,8 +128,17 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
   if (!is.null(plateau.threshold))
     chknumeric(plateau.threshold, min = 0, zero = TRUE, length = 1)
   #
+  if (length(col.line) != 1)
+    stop("Argument 'col.line' must be a single color.", call. = FALSE)
+  #
+  if (length(col.bmdl) != 1)
+    stop("Argument 'col.bmdl' must be a single color.", call. = FALSE)
+  #
+  if (length(col.med) != 1)
+    stop("Argument 'col.med' must be a single color.", call. = FALSE)
+  #
   chklogical(legend)
-    
+  
   # Get rid of warnings "no visible binding for global variable"
   .agent1 <- .agent2 <- dose1 <- TE.adj <-
     pred <- lower.pred <- upper.pred <- TE <-
@@ -174,7 +189,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     #
     # Data set with observed intervention effects
     obsdat.i <- data.frame(
-      group = i,
+      agent = i,
       agent1 = dat.i$.agent1, dose1 = dat.i$.dose1,
       agent2 = dat.i$.agent2, dose2 = dat.i$.dose2,
       TE = dat.i$.TE
@@ -197,7 +212,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     preddat.i <- predict(x, agent1 = i, dose1 = seq1)
     #
     preddat.i <- data.frame(
-      group = i,
+      agent = i,
       dose1 = preddat.i$dose1,
       pred = preddat.i$pred,
       lower.pred = preddat.i$lower,
@@ -213,7 +228,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
       #
       if (any(sel.i))
         bmdldat.i <-
-          data.frame(group = i, bmdl = preddat.i$dose1[which(sel.i)[1]])
+          data.frame(agent = i, bmdl = preddat.i$dose1[which(sel.i)[1]])
     }
     #
     # Calculation of Maximum Effective Dose (MED)
@@ -222,7 +237,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     #
     sel.med.i <- which(abs(diff(preddat.i$pred)) < plateau.threshold)[1]
     if (!is.na(sel.med.i))
-      meddat.i <- data.frame(group = i, med = preddat.i$dose1[sel.med.i + 1])
+      meddat.i <- data.frame(agent = i, med = preddat.i$dose1[sel.med.i + 1])
     #
     dat <- rbind(dat, obsdat.i)
     preddat <- rbind(preddat, preddat.i)
@@ -237,9 +252,8 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
   p <- ggplot(preddat, aes(x = dose1, y = pred)) +
     geom_ribbon(aes(ymin = lower.pred, ymax = upper.pred),
                 fill = "grey40", alpha = 0.4) +
-    geom_line(color = "blue") +
+    geom_line(color = col.line) +
     geom_point(data = dat, aes(x = dose1, y = TE.adj, color = type)) +
-    facet_wrap(~ group, scales = "free_x") +
     scale_color_manual(values = custom_colors) +
     labs(x = "Dose", y = xlab(x$sm, FALSE),
          color = "Observed data comparisons of agent with the reference") +
@@ -249,13 +263,16 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
           panel.grid.minor = element_line(color = "grey90", size = 0.15),
           plot.background = element_rect(fill = "white", color = NA))
   #
+  if (length(coef) > 1)
+    p <- p + facet_wrap(~ agent, scales = "free_x")
+  #
   if (nrow(bmdldat) > 0)
     p <- p + geom_vline(data = bmdldat, aes(xintercept = bmdl),
-                        linetype = "dotted", color = "purple", size = 0.4)
+                        linetype = "dotted", color = col.bmdl, size = 0.4)
   #
   if (nrow(meddat) > 0)
     p <- p + geom_vline(data = meddat, aes(xintercept = med),
-                        linetype = "dotdash", color = "gray40", size = 0.4)
+                        linetype = "dotdash", color = col.med, size = 0.4)
   #
   if (legend)
    p <- p + theme(legend.position = "bottom",

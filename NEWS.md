@@ -5,14 +5,29 @@
 * Return Q statistic of standard network meta-analysis model using the splitting
   approach in addition to lumping approach
 
+* Use R function facet_wrap() from the R package **ggplot2** for panels in
+  dose-response plot
+
+* R package **dplyr** added to Imports
+
+* R packages **grid**, **gridExtra** and **rlang** removed from Imports
+
 ### Bug fixes
 
 * netdose():
   - remove test statistic for difference in goodness of fit between standard
-    and dose-response model
+    and dose-response network meta-analysis model
 
 * plot.netdose():
-  - no study results printed in some networks
+  - study results were not printed in some networks
+
+### User-visible changes
+
+* plot.netdose():
+  - new defaults for arguments 'benchmark.threshold' and 'plateau.threshold'
+  - new arguments 'col.line', 'col.bmdl' and 'col.med' to change the colour of
+    dose-response curves and other information
+  - new argument 'legend' to suppress printing of legend
 
 ### Internal changes
 

@@ -15,6 +15,9 @@
   ylim = NULL,
   benchmark.threshold = NULL,
   plateau.threshold = NULL,
+  col.line = "blue",
+  col.bmdl = "purple",
+  col.med = "gray40",
   legend = !only.direct,
   ...
 )
@@ -56,6 +59,12 @@ the dose-response curve. Defines the minimum absolute change in predicted
 response between adjacent dose levels, below which the response is
 considered stable (i.e., plateau has been reached). Used to calculate the
 Maximum Effective Dose (MED). Default: \code{0.0001}.}
+
+\item{col.line}{Colour for the dose-response line.}
+
+\item{col.bmdl}{Colour for the BMLD line.}
+
+\item{col.med}{Colour for the MED line.}
 
 \item{legend}{A logical value indicating whether to print a legend.}
 
