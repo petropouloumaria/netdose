@@ -45,12 +45,12 @@ multiarm <- function(r, studlab, func.inverse) {
                      "Consider using different function for matrix inversion ",
                      "(see argument 'func.inverse')."),
               call. = FALSE)
-    else
-      warning(paste0("Matrix inversion resulted in negative variances ",
-                     "for multi-arm study '", studlab, "'. \n",
-                     "Consider changing argument 'func.inverse', e.g., ",
-                     "ginv() from MASS package."),
-              call. = FALSE)
+  else
+    warning(paste0("Matrix inversion resulted in negative variances ",
+                   "for multi-arm study '", studlab, "'. \n",
+                   "Consider changing argument 'func.inverse', e.g., ",
+                   "ginv() from MASS package."),
+            call. = FALSE)
   ##
   V <- 1 / W
   ##

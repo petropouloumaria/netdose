@@ -2,14 +2,14 @@ nma_dose <- function(TE, seTE, weights, studlab,
                      agent1, agent2, treat1, treat2,
                      narms,
                      Xd, D.matrix,
-                     n, Q, df.Q.diff,
+                     n,
                      level, reference) {
-
+  
   m <- length(TE) # number of pairwise comparisons
   a <- length(unique(c(agent1, agent2))) # Number of agents
   #
   df1 <- 2 * sum(1 / narms) # sum of degrees of freedom per study
-
+  
   #
   # Adjusted weights
   #
@@ -23,7 +23,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   Lplus[is_zero(Lplus)] <- 0
   colnames(Lplus) <- colnames(L)
   rownames(Lplus) <- rownames(L)
-
+  
   # R resistance distance (variance) matrix (n x n)
   #
   R <- matrix(0, nrow = a, ncol = a)
@@ -36,7 +36,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   # H matrix
   #
   H <- Xd %*% Lplus %*% t(Xd) %*% W
-
+  
   labels <- colnames(Lplus)
   #
   # beta = dose-response effects for agents
@@ -84,7 +84,7 @@ nma_dose <- function(TE, seTE, weights, studlab,
   colnames(delta.all.matrix) <- rownames(delta.all.matrix) <-
     colnames(se.delta.all.matrix) <- rownames(se.delta.all.matrix) <-
     unique(labels)
-
+  
   comparisons <- c(
     list(studlab = studlab, agent1 = agent1, agent2 = agent2),
     ci(delta, se.delta, level = level)
@@ -92,26 +92,19 @@ nma_dose <- function(TE, seTE, weights, studlab,
   #
   #
   all.comparisons <- ci(delta.all.matrix, se.delta.all.matrix,
-    level = level
+                        level = level
   )
   #
   # Test of total heterogeneity / inconsistency:
   #
-  Q.dose <- as.vector(t(delta - TE) %*% W %*% (delta - TE))
-
+  Q <- as.vector(t(delta - TE) %*% W %*% (delta - TE))
+  
   as.vector(t(delta - TE) %*% W %*% (delta - TE))
   as.vector(t(TE - delta) %*% W %*% (TE - delta))
-
-  df.Q.dose <- df1 - qr(Xd)$rank
+  
+  df.Q <- df1 - qr(Xd)$rank
   #
-  pval.Q.dose <- pvalQ(Q.dose, df.Q.dose)
-  #
-  # Difference to standard network meta-analysis model
-  #
-  Q.diff <- Q.dose - Q
-  Q.diff <- ifelse(is_zero(Q.diff), 0, Q.diff)
-  #
-  pval.Q.diff <- pchisq(Q.diff, df.Q.diff)
+  pval.Q <- pvalQ(Q, df.Q)
   #
   # Heterogeneity variance
   #
@@ -124,28 +117,25 @@ nma_dose <- function(TE, seTE, weights, studlab,
     }
   }
   #
-  if (df.Q.dose == 0) {
+  if (df.Q == 0) {
     tau2 <- NA
     tau <- NA
     I2 <- NA
     lower.I2 <- NA
     upper.I2 <- NA
   } else {
-    tau2 <- max(0, (Q.dose - df.Q.dose) /
-      sum(diag((I - H) %*% (Xd %*% t(Xd) * E / 2) %*% W)))
+    tau2 <- max(0, (Q - df.Q) /
+                  sum(diag((I - H) %*% (Xd %*% t(Xd) * E / 2) %*% W)))
     #
     tau <- sqrt(tau2)
     #
-    ci.I2 <- isquared(Q.dose, df.Q.dose, level)
+    ci.I2 <- isquared(Q, df.Q, level)
     #
     I2 <- ci.I2$TE
     lower.I2 <- ci.I2$lower
     upper.I2 <- ci.I2$upper
   }
-
-  # Q-to-df ratio (index for model fit)
-  Q.df <- Q.dose/df.Q.dose
-
+  
   res <- list(
     comparisons = comparisons,
     all.comparisons = all.comparisons,
@@ -160,13 +150,10 @@ nma_dose <- function(TE, seTE, weights, studlab,
     statistic.nma = ci.beta$statistic,
     pval.nma = ci.beta$p,
     #
-    Q.dose = Q.dose,
-    df.Q.dose = df.Q.dose,
-    pval.Q.dose = pval.Q.dose,
-    #
-    Q.diff = Q.diff,
-    df.Q.diff = df.Q.diff,
-    pval.Q.diff = pval.Q.diff,
+    Q = Q,
+    df.Q = df.Q,
+    pval.Q = pval.Q,
+    H = sqrt(Q / df.Q),
     #
     tau = tau,
     I2 = I2, lower.I2 = lower.I2, upper.I2 = upper.I2,
@@ -177,10 +164,9 @@ nma_dose <- function(TE, seTE, weights, studlab,
     #
     k = length(unique(studlab)),
     m = m,
-    a = a,
-    Q.df = Q.df
+    a = a
   )
-
+  
   res
 }
 

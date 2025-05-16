@@ -3,14 +3,17 @@
 #'
 #' @description
 #' R package \bold{netdose} provides methods and graphical tools to conduct
-#' the network meta-analysis with dose-response relationships in a frequentist way.
+#' the network meta-analysis with dose-response relationships in a
+#' frequentist way.
 #'
 #' @details
-#' R package \bold{netdose} is a tool to conduct dose-response network meta-analysis
-#' a frequentist way (Petropoulou et al, 2025). The package can implement the dose-response
-#' network meta-analysis model (function \code{\link{netdose}}); calculate the predicted values of the dose-response
-#' network meta-analysis model (function \code{\link{predict}}); provide dose-response plots
-#' (function \code{\link{plot.netdose}}) (Petropoulou et al., 2025).
+#' R package \bold{netdose} is a tool to conduct dose-response network
+#' meta-analysis a frequentist way (Petropoulou et al, 2025). The package can
+#' implement the dose-response network meta-analysis model (function
+#' \code{\link{netdose}}); calculate the predicted values of the dose-response
+#' network meta-analysis model (function \code{\link{predict}}); provide
+#' dose-response plots (function \code{\link{plot.netdose}})
+#' (Petropoulou et al., 2025).
 #'
 #' Type \code{help(package = "netdose")} for a listing of R functions
 #' available in \bold{netdose}.
@@ -41,13 +44,10 @@
 #' @importFrom MASS ginv
 #' @importFrom stats predict quantile median pchisq optimize
 #' @importFrom Matrix bdiag
-#' @importFrom ggplot2 ggplot aes geom_line geom_point geom_ribbon geom_vline
-#'   labs theme theme_void element_blank element_text element_rect element_line
-#'   annotate scale_color_manual scale_linetype_manual coord_cartesian
-#'   ggplotGrob
-#' @importFrom grid nullGrob unit unit.c
-#' @importFrom gridExtra grid.arrange arrangeGrob
-#' @importFrom rlang sym
+#' @importFrom ggplot2 ggplot aes element_line element_rect element_text
+#'   facet_wrap geom_line geom_point geom_ribbon geom_vline
+#'   labs scale_color_manual theme
+#' @importFrom dplyr %>% mutate
 
 "_PACKAGE"
 

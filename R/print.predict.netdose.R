@@ -16,7 +16,6 @@
 #' @method print predict.netdose
 #' @export
 
-
 print.predict.netdose <- function(x,
                                   backtransf = attr(x, "backtransf"),
                                   digits = gs("digits"),
@@ -24,7 +23,7 @@ print.predict.netdose <- function(x,
                                   ...) {
   # Check class
   chkclass(x, "predict.netdose")
-
+  
   # Check arguments
   chklogical(backtransf)
   chknumeric(digits)
@@ -33,7 +32,7 @@ print.predict.netdose <- function(x,
   smlab <- sm
   #
   cilab <- paste0(round(100 * attr(x, "level"), 1), "%-CI")
-
+  
   #
   # Back-transform results
   #
@@ -44,14 +43,14 @@ print.predict.netdose <- function(x,
   }
   else if (is_relative_effect(sm) & !backtransf)
     smlab <- paste0("log", sm)
-
+  
   #
   # Round results
   #
   x$pred <- round(x$pred, digits = digits)
   x$lower <- round(x$lower, digits = digits)
   x$upper <- round(x$upper, digits = digits)
-
+  
   #
   # Print predictions
   #
@@ -70,9 +69,9 @@ print.predict.netdose <- function(x,
   res <- res[, c("comparison", "pred", "ci")]
   names(res) <- c("comparison", smlab, cilab)
   #
-
+  
   #
   prmatrix(res, rowlab = rep("", nrow(res)), quote = FALSE, right = TRUE)
-
+  
   invisible(NULL)
 }
