@@ -196,7 +196,10 @@
 #' \item{pval.Q.split}{P-value for test of heterogeneity /
 #'   inconsistency (NMA, splitting approach).}
 #'
-#' \item{Xd}{Design matrix for dose-response network meta-analysis.}
+#' \item{B.matrix}{Edge-vertex incidence matrix.}
+#' \item{D_obs.matrix}{Matrix with observed doses.}
+#' \item{D.matrix}{Matrix with transformed doses.}
+#' \item{X.matrix}{Design matrix for dose-response network meta-analysis.}
 #'
 #' \item{sm}{Summary measure used in the analysis.}
 #' \item{level}{Level used to calculate confidence intervals for
@@ -892,7 +895,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   
   #
   #
-  # (5) Create design matrix Xd.matrix
+  # (5) Create design matrix X
   #
   #
   
@@ -940,8 +943,10 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     M <- createXd_rcs(agent1, dose1, agent2, dose2, studlab, param = param)
   }
   #
-  Xd <- M$Xd
-  D.matrix <- M$D
+  B.matrix <- M$B.matrix
+  D_obs.matrix <- M$D_obs.matrix
+  D.matrix <- M$D.matrix
+  X.matrix <- M$X.matrix
   
   
   #
@@ -1005,7 +1010,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   res.c <- nma_dose(p0$TE[o], p0$seTE[o], p0$weights[o], p0$studlab[o],
                     agent1, agent2, p0$treat1[o], p0$treat2[o],
                     p0$narms[o],
-                    Xd = Xd, D.matrix = D.matrix, n = n,
+                    Xd = X.matrix, D = D.matrix, n = n,
                     level = level, reference = reference.group
   )
   #
@@ -1013,17 +1018,14 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   tau <- res.c$tau
   #
-  p1 <- prepare(
-    TE, seTE, treat1, treat2, studlab,
-    if (is.na(tau)) 0 else tau, invmat
-  )
+  p1 <- prepare(TE, seTE, treat1, treat2, studlab,
+                if (is.na(tau)) 0 else tau, invmat)
   #
   res.r <- nma_dose(p1$TE[o], p1$seTE[o], p1$weights[o], p1$studlab[o],
                     agent1, agent2, p1$treat1[o], p1$treat2[o],
                     p1$narms[o],
-                    Xd = Xd, D.matrix = D.matrix, n = n,
-                    level = level, reference = reference.group
-  )
+                    Xd = X.matrix, D = D.matrix, n = n,
+                    level = level, reference = reference.group)
   
   
   #
@@ -1108,7 +1110,10 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     df.Q.split = df.Q.split,
     pval.Q.split = pval.Q.split,
     #
-    Xd = Xd,
+    B.matrix = B.matrix,
+    D_obs.matrix = D_obs.matrix,
+    D.matrix = D.matrix,
+    X.matrix = X.matrix,
     #
     sm = sm,
     level = level,

@@ -1,7 +1,7 @@
 nma_dose <- function(TE, seTE, weights, studlab,
                      agent1, agent2, treat1, treat2,
                      narms,
-                     Xd, D.matrix,
+                     Xd, D,
                      n,
                      level, reference) {
   
@@ -45,9 +45,9 @@ nma_dose <- function(TE, seTE, weights, studlab,
   names(beta) <- labels
   #
   # Adjust treatment effects
-  if (beta[reference] != 0) {
+  if (beta[reference] != 0)
     beta <- beta - beta[reference]
-  }
+  #
   se.beta <- sqrt(diag(Lplus))
   ci.beta <- ci(beta, se.beta, level = level)
   #
@@ -59,8 +59,8 @@ nma_dose <- function(TE, seTE, weights, studlab,
   # delta.all(.matrix) = all direct and indirect treatment estimates
   #
   B.full <- createB(ncol = n)
-  X.all <- B.full %*% D.matrix
-  colnames(X.all) <- colnames(D.matrix)
+  X.all <- B.full %*% D
+  colnames(X.all) <- colnames(D)
   #
   delta.all <- as.vector(X.all %*% beta)
   se.delta.all <- sqrt(diag(X.all %*% Lplus %*% t(X.all)))
@@ -87,13 +87,11 @@ nma_dose <- function(TE, seTE, weights, studlab,
   
   comparisons <- c(
     list(studlab = studlab, agent1 = agent1, agent2 = agent2),
-    ci(delta, se.delta, level = level)
-  )
+    ci(delta, se.delta, level = level))
   #
   #
   all.comparisons <- ci(delta.all.matrix, se.delta.all.matrix,
-                        level = level
-  )
+                        level = level)
   #
   # Test of total heterogeneity / inconsistency:
   #
@@ -123,7 +121,8 @@ nma_dose <- function(TE, seTE, weights, studlab,
     I2 <- NA
     lower.I2 <- NA
     upper.I2 <- NA
-  } else {
+  }
+  else {
     tau2 <- max(0, (Q - df.Q) /
                   sum(diag((I - H) %*% (Xd %*% t(Xd) * E / 2) %*% W)))
     #
