@@ -38,6 +38,10 @@
   - list elements 'Q.standard', 'df.Q.standard' and 'pval.Q.standard' renamed to
     'Q.lump', 'df.Q.lump' and 'pval.Q.lump'
   - new list elements 'Q.split', 'df.Q.split' and 'pval.Q.split'
+  - rename list element 'Xd' to 'X.matrix'
+  - new list element 'B.matrix'
+  - new list element 'D_obs.matrix' with the observed doses
+  - new list element 'D.matrix' with the transformed doses
 
 
 ## netdose, version 0.6-0

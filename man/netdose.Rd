@@ -219,7 +219,10 @@ alphabetic order.}
 \item{pval.Q.split}{P-value for test of heterogeneity /
   inconsistency (NMA, splitting approach).}
 
-\item{Xd}{Design matrix for dose-response network meta-analysis.}
+\item{B.matrix}{Edge-vertex incidence matrix.}
+\item{D_obs.matrix}{Matrix with observed doses.}
+\item{D.matrix}{Matrix with transformed doses.}
+\item{X.matrix}{Design matrix for dose-response network meta-analysis.}
 
 \item{sm}{Summary measure used in the analysis.}
 \item{level}{Level used to calculate confidence intervals for
