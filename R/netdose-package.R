@@ -44,10 +44,12 @@
 #' @importFrom MASS ginv
 #' @importFrom stats predict quantile median pchisq optimize
 #' @importFrom Matrix bdiag
-#' @importFrom ggplot2 ggplot aes element_line element_rect element_text
-#'   facet_wrap geom_line geom_point geom_ribbon geom_vline
-#'   labs scale_color_manual theme
-#' @importFrom dplyr %>% mutate
+#' @importFrom ggplot2 ggplot aes
+#'   element_blank element_line element_rect element_text
+#'   facet_wrap geom_line geom_dotplot geom_point geom_ribbon geom_vline
+#'   labs ylab scale_color_manual theme theme_minimal 
+#' @importFrom dplyr %>% mutate select distinct filter rename
+#' @importFrom tidyr pivot_longer
 
 "_PACKAGE"
 

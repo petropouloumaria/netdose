@@ -8,6 +8,8 @@
 * Use R function facet_wrap() from the R package **ggplot2** for panels in
   dose-response plot
 
+* New function dotplot() to produce a dot plot showing the dose distribution
+
 * R package **dplyr** added to Imports
 
 * R packages **grid**, **gridExtra** and **rlang** removed from Imports
