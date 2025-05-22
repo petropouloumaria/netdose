@@ -1122,6 +1122,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     method = method,
     #
     param = param,
+    knots = if (method == "rcs") attr(X.matrix, "param"),
     #
     reference.group = reference.group,
     #
