@@ -23,8 +23,6 @@
 #'   in the plot. If NULL, all agents will be plotted.
 #' @param ylim Optional numeric vector of length 2 specifying the y-axis limits.
 #'   If NULL, limits are determined automatically.
-#' @param same.ylim Logical; if TRUE, all plots will have the same y-axis
-#'   limits. Default is FALSE.
 #' @param benchmark.threshold Numeric; benchmark response level (e.g., 0.1 for
 #'   10 percent). Used to compute Benchmark Dose Lower Confidence Limit (BMDL).
 #' @param plateau.threshold Numeric; threshold for identifying the plateau in
@@ -105,7 +103,6 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                          col.direct = if (only.direct) "black" else "green",
                          col.indirect = "red",
                          agents = NULL,
-                         same.ylim = TRUE,
                          ylim = NULL,
                          benchmark.threshold = NULL,
                          plateau.threshold = NULL,
@@ -280,6 +277,9 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
                   legend.text = element_text(size = 8))
   else
     p <- p + theme(legend.position = "none")
+  #
+  if (!is.null(ylim))
+    p <- p + coord_cartesian(ylim = ylim)
   #
   p
 }

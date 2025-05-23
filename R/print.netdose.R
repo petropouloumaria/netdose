@@ -262,19 +262,21 @@ print.netdose <- function(x,
   #
   hetdat <-
     data.frame(
-      Q = formatN(c(x$Q, x$Q.lump, x$Q.split), digits.Q),
-      df.Q = formatN(c(x$df.Q, x$df.Q.lump, x$df.Q.split), 0),
+      Q = formatN(c(x$Q, x$Q.lump, x$Q.split), digits.Q, text.NA = "."),
+      df.Q = formatN(c(x$df.Q, x$df.Q.lump, x$df.Q.split), 0, text.NA = "."),
       pval = formatPT(c(x$pval.Q, x$pval.Q.lump, x$pval.Q.split),
                       digits = digits.pval.Q,
-                      scientific = scientific.pval),
-      ratio = formatPT(ratio, digits = digits.Q, big.mark = big.mark),
+                      scientific = scientific.pval,
+                      lab.NA = "."),
+      ratio = formatPT(ratio, digits = digits.Q, big.mark = big.mark,
+                       lab.NA = "."),
       row.names =
         c("DR-NMA model", "NMA model (lumping)", "NMA model (splitting)")
     )
   ##
   names(hetdat) <- c("Q", "df", "p-value", "Q/df")
   ##
-  print(hetdat[!is.na(hetdat$Q), , drop = FALSE])
+  prmatrix(hetdat, quote = FALSE, right = TRUE)
   
   invisible(NULL)
 }

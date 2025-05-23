@@ -11,7 +11,6 @@
   col.direct = if (only.direct) "black" else "green",
   col.indirect = "red",
   agents = NULL,
-  same.ylim = TRUE,
   ylim = NULL,
   benchmark.threshold = NULL,
   plateau.threshold = NULL,
@@ -44,9 +43,6 @@ comparisons. Defaults to \code{"red"}.}
 
 \item{agents}{Optional character vector specifying which agents to include
 in the plot. If NULL, all agents will be plotted.}
-
-\item{same.ylim}{Logical; if TRUE, all plots will have the same y-axis
-limits. Default is FALSE.}
 
 \item{ylim}{Optional numeric vector of length 2 specifying the y-axis limits.
 If NULL, limits are determined automatically.}
