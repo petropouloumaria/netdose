@@ -10,7 +10,7 @@
 
 * New function dotplot() to produce a dot plot showing the dose distribution
 
-* R package **dplyr** added to Imports
+* R packages **dplyr**, **tidyr** and **ggh4x** added to Imports
 
 * R packages **grid**, **gridExtra** and **rlang** removed from Imports
 
@@ -30,6 +30,8 @@
   - new arguments 'col.line', 'col.bmdl' and 'col.med' to change the colour of
     dose-response curves and other information
   - new argument 'legend' to suppress printing of legend
+  - argument 'same.ylim' removed (instead use same y-limits in panels if
+    argument 'ylim' is not NULL)
 
 ### Internal changes
 
