@@ -6,10 +6,16 @@
 \usage{
 dotplot(
   x,
-  col = "black",
-  fill = "orange",
-  size = 2,
+  method = "dotplot",
+  drop.single.dose = FALSE,
   drop.reference.group = TRUE,
+  col = "black",
+  fill = "steelblue",
+  size = 2,
+  spacing = 0.1,
+  numbers = FALSE,
+  col.numbers = "black",
+  size.numbers = 2,
   ylab = "Dose",
   ...
 )
@@ -17,14 +23,32 @@ dotplot(
 \arguments{
 \item{x}{An object created with \code{\link{netdose}}.}
 
+\item{method}{The method used to create the dot plot. Either,
+\code{"dotplot"} to use \code{\link[ggplot2]{geom_dotplot}} or
+\code{"point"} to use \code{\link[ggplot2]{geom_point}}; can be
+abbreviated.}
+
+\item{drop.single.dose}{A logical indicating whether to drop the
+panel for an agent with a single dose.}
+
+\item{drop.reference.group}{A logical indicating whether to drop the
+panel for the reference group.}
+
 \item{col}{The color used for the border of dots.}
 
 \item{fill}{The color used for the background of dots.}
 
 \item{size}{A single numeric with the size of the dots.}
 
-\item{drop.reference.group}{A logical indicating whether to drop the
-panel for the reference group.}
+\item{spacing}{A single numeric with the space between dots; only considered
+if \code{method = "point"}.}
+
+\item{numbers}{A logical indicating whether to print the number of doses
+per agent (only considered if \code{method = "point"}).}
+
+\item{col.numbers}{The color used for the number of doses.}
+
+\item{size.numbers}{A single numeric with the size the number of doses.}
 
 \item{ylab}{A label for the y-axis.}
 
@@ -38,12 +62,21 @@ Generates a dot plot for dose-response data
 }
 \details{
 The function produces a dot plot of drug doses.
+
+Using argument \code{method = "dotplot"}, dots are aligned in on the
+horizontal axis. However, this function does not produce the same dot size
+for agents with a single dose. Furthermore, an irrelevant note is triggered
+regarding the bin width.
+
+Argument \code{method = "point"} can be used to plot the same dot size for
+agents with a single dose, however, dots are not aligned.
 }
 \note{
-The message \emph{'Bin width defaults to 1/30 of the range of the data.
+For argument \code{method = "dotplot"}, the message
+  \emph{'Bin width defaults to 1/30 of the range of the data.
   Pick better value with `binwidth`.'} is irrelevant as dot sizes should
-  be identical. Setting the argument 'binwidth' would result in different
-  dot sizes for the drugs.
+  be identical. Setting the argument 'binwidth' would not result in the
+  same dot sizes for different drugs.
 }
 \examples{
 # Use a subset of 5 studies from anesthesia data
