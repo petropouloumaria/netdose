@@ -44,8 +44,7 @@
 #' \item{upper}{A numeric vector specifying the upper bounds of the
 #'   predicted values}
 #'
-
-#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
+#' @author Maria Petropoulou <m.petropoulou.a@gmail.com>,
 #'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
 #'
 #' @references
@@ -77,6 +76,8 @@
 #'
 #' # Predicted values
 #' pred1 <- predict(dr1)
+#' 
+#' @importFrom stats qnorm
 #' 
 #' @method predict netdose
 #' @export
@@ -182,7 +183,8 @@ predict.netdose <- function(object,
     lower.coef <- object$lower.drnma.common
     upper.coef <- object$upper.drnma.common
   }
-  
+  # 
+  z <- qnorm(1 - (1 - object$level)/2)
   #
   # Loop through requested predictions
   #
@@ -212,13 +214,8 @@ predict.netdose <- function(object,
         sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
                (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2)
       #
-      lower[i] <-
-        g1(dose1[i], param1) * sel_coef(lower.coef, agent1[i]) -
-        g1(dose2[i], param1) * sel_coef(lower.coef, agent2[i])
-      #
-      upper[i] <-
-        g1(dose1[i], param1) * sel_coef(upper.coef, agent1[i]) -
-        g1(dose2[i], param1) * sel_coef(upper.coef, agent2[i])
+      lower[i] <- pred[i] - z * se.pred[i]
+      upper[i] <- pred[i] + z * se.pred[i]
     } else {
       if (object$method == "quadratic") {
         g1 <- dose2dose
@@ -237,32 +234,26 @@ predict.netdose <- function(object,
         g2 <- dose2rcs
         #
         param1 <- NULL
-        param2 <- object$param
+        param2_a1 <- as.numeric(object$knots[[agent1[i]]])
+        param2_a2 <- as.numeric(object$knots[[agent2[i]]])
+      
+  
       }
       #
       pred[i] <-
         g1(dose1[i], param1) * sel_coef(coef, agent1[i]) +
-        g2(dose1[i], param2) * sel_coef(coef, agent1[i], 2) -
-        g1(dose2[i], param1) * sel_coef(coef, agent2[i]) +
-        g2(dose2[i], param2) * sel_coef(coef, agent2[i], 2)
+        g2(dose1[i], param2_a1) * sel_coef(coef, agent1[i], 2) -
+        g1(dose2[i], param1) * sel_coef(coef, agent2[i]) -
+        g2(dose2[i], param2_a2) * sel_coef(coef, agent2[i], 2)
       #
       se.pred[i] <-
         sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
-               (g2(dose1[i], param2) * sel_coef(se.coef, agent1[i], 2))^2 +
+               (g2(dose1[i], param2_a1) * sel_coef(se.coef, agent1[i], 2))^2 +
                (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2 +
-               (g2(dose2[i], param2) * sel_coef(se.coef, agent2[i], 2))^2)
+               (g2(dose2[i], param2_a2) * sel_coef(se.coef, agent2[i], 2))^2)
       #
-      lower[i] <-
-        g1(dose1[i], param1) * sel_coef(lower.coef, agent1[i]) +
-        g2(dose1[i], param2) * sel_coef(lower.coef, agent1[i], 2) -
-        g1(dose2[i], param1) * sel_coef(lower.coef, agent2[i]) +
-        g2(dose2[i], param2) * sel_coef(lower.coef, agent2[i], 2)
-      #
-      upper[i] <-
-        g1(dose1[i], param1) * sel_coef(upper.coef, agent1[i]) +
-        g2(dose1[i], param2) * sel_coef(upper.coef, agent1[i], 2) -
-        g1(dose2[i], param1) * sel_coef(upper.coef, agent2[i]) +
-        g2(dose2[i], param2) * sel_coef(upper.coef, agent2[i], 2)
+      lower[i] <- pred[i] - z * se.pred[i]
+      upper[i] <- pred[i] + z * se.pred[i]
     }
   }
   

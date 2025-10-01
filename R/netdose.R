@@ -219,7 +219,7 @@
 #'
 #' \item{data}{Data frame containing the study information.}
 #'
-#' @author Maria Petropoulou <maria.petropoulou@@uniklinik-freiburg.de>,
+#' @author Maria Petropoulou <m.petropoulou.a@gmail.com>,
 #'   Guido Schwarzer <guido.schwarzer@@uniklinik-freiburg.de>
 #'
 #' @references

@@ -266,10 +266,8 @@ print.netdose <- function(x,
       df.Q = formatN(c(x$df.Q, x$df.Q.lump, x$df.Q.split), 0, text.NA = "."),
       pval = formatPT(c(x$pval.Q, x$pval.Q.lump, x$pval.Q.split),
                       digits = digits.pval.Q,
-                      scientific = scientific.pval,
-                      lab.NA = "."),
-      ratio = formatPT(ratio, digits = digits.Q, big.mark = big.mark,
-                       lab.NA = "."),
+                      scientific = scientific.pval, lab.NA = "."),
+      ratio = formatPT(ratio, digits = digits.Q, big.mark = big.mark, lab.NA = "."),
       row.names =
         c("DR-NMA model", "NMA model (lumping)", "NMA model (splitting)")
     )

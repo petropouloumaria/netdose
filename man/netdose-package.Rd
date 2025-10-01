@@ -26,7 +26,7 @@ Type \code{citation("netdose")} on how to cite \bold{netdose}
 in publications.
 
 To report problems and bugs, please send an email to Dr. Maria
-Petropoulou <maria.petropoulou@uniklinik-freiburg.de>.
+Petropoulou <m.petropoulou.a@gmail.com>.
 
 The development version of \bold{netdose} is available on GitHub
 \url{https://github.com/petropouloumaria/netdose}.

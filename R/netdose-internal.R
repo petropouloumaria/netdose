@@ -2,7 +2,7 @@
 # Auxiliary functions
 #
 # Package: netdose
-# Authors: Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
+# Authors: Maria Petropoulou <m.petropoulou.a@gmail.com>,
 # Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>,
 # License: GPL (>= 2)
 #
@@ -314,7 +314,10 @@ createXd_rcs <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
     }
     dose.i <- c(dose1[agent1 == agents[i]], dose2[agent2 == agents[i]])
     #
-    knots.i <- quantile(dose.i, probs = param)
+    mindose.i <- min(dose.i)
+    maxdose.i <- max(dose.i)
+    #
+    knots.i <- quantile(c(mindose.i:maxdose.i), probs = param)
     #
     knots[[agents[i]]] <- knots.i
   }
@@ -425,11 +428,11 @@ dose2exp <- function(x, p = NULL) {
 
 dose2rcs <- function(x, p = NULL) {
   if (length(unique(p)) == 1 || length(unique(p)) == 2) {
-    return(x)
-  }
-  else {
-    return(rcspline.eval(x, knots = p, inclx = FALSE))
-  }
+     return(rep(0, length(x)))
+     }
+   else {
+       return(rcspline.eval(x, knots = p, inclx = FALSE))
+     }
 }
 
 sel_coef <- function(x, agent, id = 1) {

@@ -1,5 +1,4 @@
 netdose: Dose-Response Network Meta-Analysis in a Frequentist Way
-================
 
 [![License: GPL
 (\>=2)](https://img.shields.io/badge/license-GPL-blue)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
@@ -8,10 +7,6 @@ Version](https://www.r-pkg.org/badges/version/netdose)](https://cran.r-project.o
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/netdose)](https://cranlogs.r-pkg.org/badges/netdose)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 66a22abae9a8928b2dddc0fe40d6b0c093a68da1
 ## Description
 
 `netdose` is an R package for conducting **Dose-Response Network

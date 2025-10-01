@@ -362,6 +362,6 @@ Petropoulou et al. (2025):
 Network meta-analysis with dose-response relationships.
 }
 \author{
-Maria Petropoulou <maria.petropoulou@uniklinik-freiburg.de>,
+Maria Petropoulou <m.petropoulou.a@gmail.com>,
   Guido Schwarzer <guido.schwarzer@uniklinik-freiburg.de>
 }

@@ -22,7 +22,7 @@
 #' in publications.
 #'
 #' To report problems and bugs, please send an email to Dr. Maria
-#' Petropoulou <maria.petropoulou@uniklinik-freiburg.de>.
+#' Petropoulou <m.petropoulou.a@gmail.com>.
 #'
 #' The development version of \bold{netdose} is available on GitHub
 #' \url{https://github.com/petropouloumaria/netdose}.
@@ -44,7 +44,7 @@
 #' @importFrom MASS ginv
 #' @importFrom stats predict quantile median pchisq optimize
 #' @importFrom Matrix bdiag
-#' @importFrom ggplot2 ggplot aes coord_cartesian
+#' @importFrom ggplot2 ggplot aes coord_cartesian 
 #'   element_blank element_line element_rect element_text
 #'   facet_wrap geom_dotplot geom_line geom_point geom_ribbon geom_text
 #'   geom_vline guide_axis labs scale_color_manual
