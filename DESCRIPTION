@@ -1,7 +1,7 @@
 Package: netdose
 Title: Dose-Response Network Meta-Analysis in a Frequentist Way
 Version: 0.7-2
-Date: 2025-10-01
+Date: 2025-10-05
 Depends: R (>= 4.4.0), netmeta (>= 3.1.1)
 Imports: MASS, Hmisc, meta, Matrix, ggplot2, ggh4x, dplyr, tidyr
 Authors@R: c(person("Maria", "Petropoulou",

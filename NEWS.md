@@ -1,4 +1,4 @@
-## netdose, version 0.7-0 (2025-mm-dd)
+## netdose, version 0.7-2
 
 ### Major changes
 
@@ -19,6 +19,9 @@
 * netdose():
   - remove test statistic for difference in goodness of fit between standard
     and dose-response network meta-analysis model
+
+* predict.netdose():
+  - calculate correct predictions for restricted cubic splines
 
 * plot.netdose():
   - study results were not printed in some networks
