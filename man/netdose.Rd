@@ -285,9 +285,9 @@ is ignored for a linear, exponential or quadratic polynomial dose-response
 relationship.
 }
 \examples{
-# Use a subset of 5 studies from anesthesia data
+# Use a subset of 3 studies from anesthesia data
 anesthesia_subset <-
-  subset(anesthesia, study \%in\% unique(anesthesia$study)[1:5])
+  subset(anesthesia, study \%in\% unique(anesthesia$study)[1:3])
 
 # Prepare data for DR-NMA
 dat <- pairwise(
