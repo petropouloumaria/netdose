@@ -1,2 +1,9 @@
+README.md
+.travis.yml
+.*[.]Rproj
+.Rproj.user
+.github
+.*[.]pptx
+roxygen2.*[.]R
 ^.*\.Rproj$
 ^\.Rproj\.user$
