@@ -211,6 +211,9 @@ createXd2 <- function(agent1, dose1, agent2, dose2, studlab, data = NULL,
   else
     seq <- setseq(seq, agents)
   #
+  if (is.null(param)) {
+    param <- c(1, 2)
+  }
   B.matrix <-
     matrix(0,
            nrow = length(agent1), ncol = length(trts),
@@ -407,7 +410,7 @@ dose2poly <- function(x, p = NULL) {
   if (is.null(p)) {
     p <- 2
   }
-  x^p
+  return(x^p)
 }
 
 # Define the fractional polynomial transformation function
@@ -421,8 +424,8 @@ dose2fp <- function(x, p = -0.5, epsilon = 0.001) {
   }
 }
 
-dose2exp <- function(x, p = NULL) {
-  return(1 - exp(-x))
+dose2exp <- function(x, p = 1) {
+  return(1 - exp(-p*x))
 }
 
 

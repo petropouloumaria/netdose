@@ -167,6 +167,8 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
   #
   # Loop through each agent and create data sets
   #
+  avsa <- c()
+  #
   for (i in names(coef)) {
     dat.i <- subset(data, .agent1 == i | .agent2 == i)
     # Drop comparisons using the same agent
@@ -187,6 +189,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     }
     # Active vs active
     active <- !(dat.i$.agent2 %in% x$inactive | dat.i$.dose2 == 0)
+    avsa <- c(avsa, active)
     #
     pred2.i <- predict(x, agent1 = dat.i$.agent2, dose1 = dat.i$.dose2)
     #
@@ -247,11 +250,35 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     pddat <- rbind(pddat, pddat.i)
   }
   
-  custom_colors <- c("Direct" = col.direct, "Indirect" = col.indirect)
-  
-  # Custom labels
-  custom_labels <- c("Direct" = "Direct observed comparison with the reference",
-                     "Indirect" = "Indirect observed comparison with the reference")
+  # Custom labels/colors
+  custom_colors <- c()
+  custom_labels <- c()
+
+  if(only.direct == TRUE){
+    
+    custom_labels["Direct"] <- "Direct observed comparison with the reference"
+    custom_colors <- c("Direct" = col.direct)
+    
+  }else{
+    
+    if(!any(avsa)){
+      custom_labels["Direct"] <- "Direct observed comparison with the reference"
+      custom_colors <- c(custom_colors, "Direct" = col.direct)
+    }else{
+      
+      if(all((avsa) == FALSE)){
+        custom_labels["Indirect"] <- "Indirect observed comparison with the reference"
+        custom_colors <- c(custom_colors, "Indirect" = col.indirect)
+      }
+      
+      custom_labels["Direct"] <- "Direct observed comparison with the reference"
+      custom_colors <- c(custom_colors, "Direct" = col.direct)
+    
+      custom_labels["Indirect"] <- "Indirect observed comparison with the reference"
+      custom_colors <- c(custom_colors, "Indirect" = col.indirect)
+    
+    }
+  } 
   
   if (nrow(bmdldat) > 0) {
     custom_colors <- c(custom_colors, "BMDL" = col.bmdl)
@@ -264,6 +291,14 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
   }
   
   # Create plot
+  # ---- Legend mapping built to exact keys ----
+  legend_keys <- names(custom_labels)
+  
+  shape_vals <- ifelse(legend_keys %in% c("Direct", "Indirect"), 16, NA)
+  linetype_vals <- ifelse(legend_keys == "BMDL", "dotted",
+                          ifelse(legend_keys == "PD", "dotdash", "blank"))
+  color_vals <- unname(custom_colors[legend_keys])
+  
   p <- ggplot(preddat, aes(x = dose1, y = pred)) +
     geom_ribbon(aes(ymin = lower.pred, ymax = upper.pred),
                 fill = "grey40", alpha = 0.4) +
@@ -271,21 +306,14 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
     geom_point(data = dat, aes(x = dose1, y = TE.adj, color = type)) +
     scale_color_manual(
       values = custom_colors,
-      breaks = names(custom_labels),
+      breaks = legend_keys,
       labels = custom_labels,
       guide = guide_legend(
         title = "",
         override.aes = list(
-          shape = c(
-            rep(16, sum(names(custom_labels) %in% c("Direct", "Indirect"))),
-            rep(NA, sum(!names(custom_labels) %in% c("Direct", "Indirect")))
-          ),
-          linetype = c(
-            rep("blank", sum(names(custom_labels) %in% c("Direct", "Indirect"))),
-            if ("BMDL" %in% names(custom_labels)) "dotted",
-            if ("PD" %in% names(custom_labels)) "dotdash"
-          )[seq_along(custom_labels)],
-          color = unname(custom_colors[names(custom_labels)])
+          shape = shape_vals,
+          linetype = linetype_vals,
+          color = color_vals
         )
       )
     ) +
@@ -295,7 +323,7 @@ plot.netdose <- function(x, pooled = if (x$random) "random" else "common",
           panel.grid.major = element_line(color = "grey85", size = 0.3),
           panel.grid.minor = element_line(color = "grey90", size = 0.15),
           plot.background = element_rect(fill = "white", color = NA))
-  
+
   if (length(coef) > 1)
     p <- p + facet_wrap(~ agent, scales = "free_x")
   

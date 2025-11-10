@@ -20,8 +20,8 @@ netdose(
   event2 = NULL,
   sm,
   common = gs("common"),
-  random = gs("random") | !is.null(tau.preset),
-  tau.preset = NULL,
+  random = gs("random") | !is.null(tau),
+  tau = NULL,
   method = "linear",
   param = NULL,
   reference.group,
@@ -82,7 +82,7 @@ network meta-analysis should be conducted. The default is \code{TRUE}.}
 \item{random}{A logical indicating whether a random effects dose-response
 network meta-analysis should be conducted. The default is \code{TRUE}.}
 
-\item{tau.preset}{An optional value for the square-root of the
+\item{tau}{An optional value for the square-root of the
 between-study variance \eqn{\tau^2}.}
 
 \item{method}{An optional character string specifying the method to

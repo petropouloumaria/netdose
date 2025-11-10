@@ -199,7 +199,7 @@ predict.netdose <- function(object,
       } else if (object$method == "exponential") {
         g1 <- dose2exp
         #
-        param1 <- NULL
+        param1 <- object$param 
       } else if (object$method == "fp1") {
         g1 <- dose2fp
         #
@@ -221,14 +221,52 @@ predict.netdose <- function(object,
         g1 <- dose2dose
         g2 <- dose2poly
         #
-        param1 <- NULL
-        param2 <- NULL
+        param1 <- object$param[1]
+        param2 <- object$param[2]
+        
+        
+        #
+        pred[i] <-
+          g1(dose1[i], param1) * sel_coef(coef, agent1[i]) +
+          g2(dose1[i], param2) * sel_coef(coef, agent1[i], 2) -
+          g1(dose2[i], param1) * sel_coef(coef, agent2[i]) -
+          g2(dose2[i], param2) * sel_coef(coef, agent2[i], 2)
+        #
+        se.pred[i] <-
+          sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
+                 (g2(dose1[i], param2) * sel_coef(se.coef, agent1[i], 2))^2 +
+                 (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2 +
+                 (g2(dose2[i], param2) * sel_coef(se.coef, agent2[i], 2))^2)
+        #
+        lower[i] <- pred[i] - z * se.pred[i]
+        upper[i] <- pred[i] + z * se.pred[i]
+        
+        
+        
       } else if (object$method == "fp2") {
         g1 <- dose2fp
         g2 <- dose2fp
         #
         param1 <- object$param[1]
         param2 <- object$param[2]
+        
+        
+        pred[i] <-
+          g1(dose1[i], param1) * sel_coef(coef, agent1[i]) +
+          g2(dose1[i], param2) * sel_coef(coef, agent1[i], 2) -
+          g1(dose2[i], param1) * sel_coef(coef, agent2[i]) -
+          g2(dose2[i], param2) * sel_coef(coef, agent2[i], 2)
+        #
+        se.pred[i] <-
+          sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
+                 (g2(dose1[i], param2) * sel_coef(se.coef, agent1[i], 2))^2 +
+                 (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2 +
+                 (g2(dose2[i], param2) * sel_coef(se.coef, agent2[i], 2))^2)
+        #
+        lower[i] <- pred[i] - z * se.pred[i]
+        upper[i] <- pred[i] + z * se.pred[i]
+        
+        
       } else if (object$method == "rcs") {
         g1 <- dose2dose
         g2 <- dose2rcs
@@ -237,23 +275,24 @@ predict.netdose <- function(object,
         param2_a1 <- as.numeric(object$knots[[agent1[i]]])
         param2_a2 <- as.numeric(object$knots[[agent2[i]]])
       
+        #
+        pred[i] <-
+          g1(dose1[i], param1) * sel_coef(coef, agent1[i]) +
+          g2(dose1[i], param2_a1) * sel_coef(coef, agent1[i], 2) -
+          g1(dose2[i], param1) * sel_coef(coef, agent2[i]) -
+          g2(dose2[i], param2_a2) * sel_coef(coef, agent2[i], 2)
+        #
+        se.pred[i] <-
+          sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
+                 (g2(dose1[i], param2_a1) * sel_coef(se.coef, agent1[i], 2))^2 +
+                 (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2 +
+                 (g2(dose2[i], param2_a2) * sel_coef(se.coef, agent2[i], 2))^2)
+        #
+        lower[i] <- pred[i] - z * se.pred[i]
+        upper[i] <- pred[i] + z * se.pred[i]
   
       }
-      #
-      pred[i] <-
-        g1(dose1[i], param1) * sel_coef(coef, agent1[i]) +
-        g2(dose1[i], param2_a1) * sel_coef(coef, agent1[i], 2) -
-        g1(dose2[i], param1) * sel_coef(coef, agent2[i]) -
-        g2(dose2[i], param2_a2) * sel_coef(coef, agent2[i], 2)
-      #
-      se.pred[i] <-
-        sqrt((g1(dose1[i], param1) * sel_coef(se.coef, agent1[i]))^2 +
-               (g2(dose1[i], param2_a1) * sel_coef(se.coef, agent1[i], 2))^2 +
-               (g1(dose2[i], param1) * sel_coef(se.coef, agent2[i]))^2 +
-               (g2(dose2[i], param2_a2) * sel_coef(se.coef, agent2[i], 2))^2)
-      #
-      lower[i] <- pred[i] - z * se.pred[i]
-      upper[i] <- pred[i] + z * se.pred[i]
+
     }
   }
   

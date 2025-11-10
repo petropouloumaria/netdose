@@ -38,7 +38,7 @@
 #'   network meta-analysis should be conducted. The default is \code{TRUE}.
 #' @param random A logical indicating whether a random effects dose-response
 #'   network meta-analysis should be conducted. The default is \code{TRUE}.
-#' @param tau.preset An optional value for the square-root of the
+#' @param tau An optional value for the square-root of the
 #'   between-study variance \eqn{\tau^2}.
 #' @param method An optional character string specifying the method to
 #'  be used for the dose-response relationship. Either, "linear", "exponential",
@@ -308,8 +308,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
                     #
                     sm,
                     common = gs("common"),
-                    random = gs("random") | !is.null(tau.preset),
-                    tau.preset = NULL,
+                    random = gs("random") | !is.null(tau),
+                    tau = NULL,
                     #
                     method = "linear",
                     param = NULL,
@@ -338,8 +338,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   chklogical(common)
   chklogical(random)
   #
-  if (!is.null(tau.preset)) {
-    chknumeric(tau.preset, min = 0, length = 1)
+  if (!is.null(tau)) {
+    chknumeric(tau, min = 0, length = 1)
   }
   #
   method <-
@@ -905,9 +905,12 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     M <- createXd1(agent1, dose1, agent2, dose2, studlab, g = dose2dose)
   }
   else if (method == "exponential") {
-    param <- NULL
+    if (is.null(param)) {
+      param <- 1
+    }
     #
-    M <- createXd1(agent1, dose1, agent2, dose2, studlab, g = dose2exp)
+    M <- createXd1(agent1, dose1, agent2, dose2, studlab,
+                   g = dose2exp, param = param)
   }
   else if (method == "fp1") { # fractional polynomial (order 1)
     if (is.null(param)) {
@@ -919,7 +922,9 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     )
   }
   else if (method == "quadratic") { # quadratic polynomial
-    param <- NULL
+    if (is.null(param)) {
+       param <- c(1, 2)
+    }
     #
     M <- createXd2(agent1, dose1, agent2, dose2, studlab,
                    g1 = dose2dose, g2 = dose2poly, param = param
@@ -1003,7 +1008,6 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     }
   }
   
-  
   #
   # Common effects DR-NMA model
   #
@@ -1018,8 +1022,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   tau <- res.c$tau
   #
-  p1 <- prepare(TE, seTE, treat1, treat2, studlab,
-                if (is.na(tau)) 0 else tau, invmat)
+  p1 <- prepare(TE, seTE, treat1, treat2, studlab, tau = tau, func.inverse = func.inverse)
   #
   res.r <- nma_dose(p1$TE[o], p1$seTE[o], p1$weights[o], p1$studlab[o],
                     agent1, agent2, p1$treat1[o], p1$treat2[o],
