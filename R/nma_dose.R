@@ -97,6 +97,8 @@ nma_dose <- function(TE, seTE, weights, studlab,
   #
   Q <- as.vector(t(delta - TE) %*% W %*% (delta - TE))
   
+  Q <- max(0, Q)
+  
   as.vector(t(delta - TE) %*% W %*% (delta - TE))
   as.vector(t(TE - delta) %*% W %*% (TE - delta))
   

@@ -31,6 +31,7 @@ netdose(
   tol.multiarm = 0.001,
   tol.multiarm.se = NULL,
   details.chkmultiarm = FALSE,
+  correlated = FALSE,
   func.inverse = invmat,
   keepdata = gs("keepdata"),
   warn = TRUE
@@ -120,6 +121,9 @@ design (only considered for standard network meta-analysis model).}
 estimates and / or variances of multi-arm studies with
 inconsistent results or negative multi-arm variances should be
 printed (only considered for standard network meta-analysis model).}
+
+\item{correlated}{A logical indicating if the arms of a multi arm study
+is correlated.}
 
 \item{func.inverse}{R function used to calculate the pseudoinverse
 of the Laplacian matrix L.}
@@ -235,6 +239,7 @@ alphabetic order.}
 
 \item{reference.group}{Reference agent.}
 \item{Q.to.df.ratio}{Q to df ratio, i.e, Q/df.Q.}
+\item{correlated}{Correlated treatment arms in multi-arm studies.}
 \item{func.inverse}{Function used to calculate the pseudoinverse of
   the Laplacian matrix L.}
 \item{backtransf}{A logical indicating whether results should be

@@ -67,13 +67,15 @@
 #'   estimates and / or variances of multi-arm studies with
 #'   inconsistent results or negative multi-arm variances should be
 #'   printed (only considered for standard network meta-analysis model).
-#' @param keepdata A logical indicating whether original data(set)
-#'   should be kept in netdose object.
-#' @param warn A logical indicating whether warnings should be printed
-#'   (e.g., if studies are excluded from network meta-analysis due to zero
-#'   standard errors).
+#' @param correlated A logical indicating if the arms of a multi arm study
+#'  is correlated.
 #' @param func.inverse R function used to calculate the pseudoinverse
-#'   of the Laplacian matrix L.
+#'  of the Laplacian matrix L.
+#' @param keepdata A logical indicating whether original data(set)
+#' should be kept in netdose object.
+#' @param warn A logical indicating whether warnings should be printed
+#' (e.g., if studies are excluded from network meta-analysis due to zero
+#' standard errors).
 #'
 #' @details
 #' The dose-response network meta-analysis (DR-NMA) has been implemented
@@ -212,6 +214,7 @@
 #'
 #' \item{reference.group}{Reference agent.}
 #' \item{Q.to.df.ratio}{Q to df ratio, i.e, Q/df.Q.}
+#' \item{correlated}{Correlated treatment arms in multi-arm studies.}
 #' \item{func.inverse}{Function used to calculate the pseudoinverse of
 #'   the Laplacian matrix L.}
 #' \item{backtransf}{A logical indicating whether results should be
@@ -325,6 +328,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
                     tol.multiarm.se = NULL,
                     details.chkmultiarm = FALSE,
                     #
+                    correlated = FALSE,
                     func.inverse = invmat,
                     #
                     keepdata = gs("keepdata"),
@@ -363,6 +367,8 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     chknumeric(tol.multiarm.se, min = 0, length = 1)
   }
   chklogical(details.chkmultiarm)
+  #
+  chklogical(correlated)
   #
   chklogical(keepdata)
   chklogical(warn)
@@ -960,9 +966,11 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   #
   
-  p0 <- prepare(TE, seTE, treat1, treat2, studlab, func.inverse = func.inverse)
-  ps <- prepare(TE, seTE, agent1, agent2, studlab, func.inverse = func.inverse)
+  p0 <- prepare(TE, seTE, treat1, treat2, studlab, correlated = correlated, func.inverse = func.inverse)
+  ps <- prepare(TE, seTE, agent1, agent2, studlab, correlated = correlated, func.inverse = func.inverse)
   #
+  p0 <- p0$data
+  ps <- ps$data
   o <- order(p0$order)
   os <- order(ps$order)
   
@@ -980,7 +988,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     # Lumping approach
     #
     if (netconnection(agent1, agent2, ps$studlab[os])$n.subnets == 1) {
-      net1 <- netmeta(ps$TE[os], ps$seTE[os], agent1, agent2, ps$studlab[os],
+      net1 <- netmeta(TE, seTE, treat1 = data$agent1, treat2 = data$agent2, studlab, data = data,
                       reference.group = reference.group,
                       tol.multiarm = tol.multiarm,
                       tol.multiarm.se = tol.multiarm.se,
@@ -991,11 +999,12 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
       df.Q.lump <- net1$df.Q
       pval.Q.lump <- net1$pval.Q
     }
+    }
     #
     # Splitting approach
     #
     if (netconnection(treat1, treat2, ps$studlab[os])$n.subnets == 1) {
-      net2 <- netmeta(ps$TE[os], ps$seTE[os], treat1, treat2, ps$studlab[os],
+      net2 <- netmeta(TE, seTE, treat1, treat2, studlab, data = data,
                       reference.group = reference.group,
                       tol.multiarm = tol.multiarm,
                       tol.multiarm.se = tol.multiarm.se,
@@ -1005,9 +1014,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
       Q.split <- net2$Q
       df.Q.split <- net2$df.Q
       pval.Q.split <- net2$pval.Q
-    }
-  }
-  
+   }
   #
   # Common effects DR-NMA model
   #
@@ -1022,8 +1029,9 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   tau <- res.c$tau
   #
-  p1 <- prepare(TE, seTE, treat1, treat2, studlab, tau = tau, func.inverse = func.inverse)
+  p1 <- prepare(TE, seTE, treat1, treat2, studlab, tau = tau, correlated = correlated, func.inverse = func.inverse)
   #
+  p1 <- p1$data
   res.r <- nma_dose(p1$TE[o], p1$seTE[o], p1$weights[o], p1$studlab[o],
                     agent1, agent2, p1$treat1[o], p1$treat2[o],
                     p1$narms[o],
@@ -1132,6 +1140,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     func.inverse = deparse(substitute(func.inverse)),
     #
     backtransf = backtransf,
+    correlated = correlated,
     #
     data = if (keepdata) data else NULL
   )
