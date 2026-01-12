@@ -47,7 +47,7 @@ References:
 
 Weibel S, Rücker G, Eberhart LHJ, et al. *Drugs for preventing
 postoperative nausea and vomiting in adults after general anaesthesia: a
-network meta-analysis.*Cochrane Database of Systematic Reviews.
+network meta-analysis.* Cochrane Database of Systematic Reviews.
 2020;**10**(10):CD012859.
 
 Weibel S, Schaefer MS, Raj D, et al. *Drugs for preventing postoperative
@@ -112,11 +112,11 @@ predict(dr_rcs)
 Visualizing Dose-Response Relationships
 
 ``` r
-plot(dr_exp, only.direct = FALSE)
-plot(dr_fp1_p05, only.direct = FALSE)
-plot(dr_rcs, only.direct = FALSE)
+plot(dr_exp)
+plot(dr_fp1_p05)
+plot(dr_rcs)
 ```
 
 ## License
 
-This package is released under the **GPL-2 License**.
+This package is released under the **GNU General Public License, version 2 or any later version**.
