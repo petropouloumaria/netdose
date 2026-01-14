@@ -1,4 +1,11 @@
-## netdose, version 0.7-2
+## netdose, version 0.7-4 (14-01-2025)
+
+### Major changes
+
+* netdose():
+  - exponential model with a parameter p included
+
+## netdose, version 0.7-2 
 
 ### Major changes
 

@@ -104,10 +104,10 @@
 #' using argument \code{param}: a numeric vector specifying the percentiles to
 #' set the knots for the restricted cubic splines (default: knots at the 10th,
 #' 50th, and 90th percentile), a single numeric specifying the power of the
-#' fractional polynomial with order 1 (default: -0.5), or a numeric vector of
-#' length 2 specifying the first and second power of a fractional polynomial
+#' fractional polynomial with order 1 (default: -0.5), the power of the exponential (default: 1), 
+#' or a numeric vector of length 2 specifying the first and second power of a fractional polynomial
 #' with order 2 (default: -0.5 and -0.5). The input for argument \code{param}
-#' is ignored for a linear, exponential or quadratic polynomial dose-response
+#' is ignored for a linear or quadratic polynomial dose-response
 #' relationship.
 #'
 #' @return
@@ -219,7 +219,6 @@
 #'   the Laplacian matrix L.}
 #' \item{backtransf}{A logical indicating whether results should be
 #'   back transformed in printouts and forest plots.}
-#'
 #' \item{data}{Data frame containing the study information.}
 #'
 #' @author Maria Petropoulou <m.petropoulou.a@gmail.com>,
@@ -983,12 +982,16 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
   #
   Q.split <- df.Q.split <- pval.Q.split <- NA
   #
+  data.tmp <- if (!is.null(data)) data else
+    data.frame(agent1 = agent1, agent2 = agent2, studlab = studlab,
+               stringsAsFactors = FALSE)
+  #
   if (!any(same_agents)) {
     #
     # Lumping approach
     #
     if (netconnection(agent1, agent2, ps$studlab[os])$n.subnets == 1) {
-      net1 <- netmeta(TE, seTE, treat1 = data$agent1, treat2 = data$agent2, studlab, data = data,
+      net1 <- netmeta(TE, seTE, treat1 = agent1, treat2 = agent2, studlab, data = data.tmp,
                       reference.group = reference.group,
                       tol.multiarm = tol.multiarm,
                       tol.multiarm.se = tol.multiarm.se,
@@ -1004,7 +1007,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     # Splitting approach
     #
     if (netconnection(treat1, treat2, ps$studlab[os])$n.subnets == 1) {
-      net2 <- netmeta(TE, seTE, treat1, treat2, studlab, data = data,
+      net2 <- netmeta(TE, seTE, treat1, treat2, studlab, data = data.tmp,
                       reference.group = reference.group,
                       tol.multiarm = tol.multiarm,
                       tol.multiarm.se = tol.multiarm.se,
@@ -1058,6 +1061,7 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     seTE = p0$seTE[o],
     seTE.adj.common = sqrt(1 / p0$weights[o]),
     seTE.adj.random = sqrt(1 / p1$weights[o]),
+    seTEadj = res.c$seTE[o],
     #
     k = res.c$k,
     m = res.c$m,

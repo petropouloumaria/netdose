@@ -244,7 +244,6 @@ alphabetic order.}
   the Laplacian matrix L.}
 \item{backtransf}{A logical indicating whether results should be
   back transformed in printouts and forest plots.}
-
 \item{data}{Data frame containing the study information.}
 }
 \description{
