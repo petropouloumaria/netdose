@@ -1,7 +1,7 @@
 Package: netdose
 Title: Dose-Response Network Meta-Analysis in a Frequentist Way
-Version: 0.7-4
-Date: 2026-01-15
+Version: 0.7-5
+Date: 2026-02-06
 Depends: R (>= 4.4.0), netmeta (>= 3.1.1)
 Imports: MASS, Hmisc, meta, Matrix, ggplot2, ggh4x, dplyr, tidyr
 Authors@R: c(person("Maria", "Petropoulou",
@@ -13,7 +13,11 @@ Authors@R: c(person("Maria", "Petropoulou",
                     comment = c(ORCID = "0000-0001-6214-9087")))
 Maintainer: Maria Petropoulou <m.petropoulou.a@gmail.com>
 URL: https://github.com/petropouloumaria/netdose
-Description: A set of functions providing the implementation of the network meta-analysis model with dose-response relationships, predicted values of the fitted model and dose-response plots in a frequentist way.
+Description: A set of functions providing the implementation of the
+  network meta-analysis model with dose-response relationships,
+  predicted values of the fitted model and dose-response plots
+  in a frequentist way (Petropoulou et al., 2026)
+  <doi:10.1186/s12874-025-02754-4>.
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.3.3

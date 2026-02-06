@@ -12,12 +12,12 @@ frequentist way.
 }
 \details{
 R package \bold{netdose} is a tool to conduct dose-response network
-meta-analysis a frequentist way (Petropoulou et al, 2025). The package can
+meta-analysis a frequentist way (Petropoulou et al, 2026). The package can
 implement the dose-response network meta-analysis model (function
 \code{\link{netdose}}); calculate the predicted values of the dose-response
 network meta-analysis model (function \code{\link{predict}}); provide
 dose-response plots (function \code{\link{plot.netdose}})
-(Petropoulou et al., 2025).
+(Petropoulou et al., 2026).
 
 Type \code{help(package = "netdose")} for a listing of R functions
 available in \bold{netdose}.
@@ -32,8 +32,10 @@ The development version of \bold{netdose} is available on GitHub
 \url{https://github.com/petropouloumaria/netdose}.
 }
 \references{
-Petropoulou et al. (2025):
-Network meta-analysis with dose-response relationships.
+Petropoulou M, Rücker G, Schwarzer G (2026):
+Network meta-analysis with dose-response relationships,
+\emph{BMC Medical Research Methodology},
+\bold{28}, 17
 }
 \seealso{
 Useful links:

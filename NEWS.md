@@ -1,4 +1,11 @@
-## netdose, version 0.7-4 (15-01-2025)
+## netdose, version 0.7-5 (2026-mm-dd)
+
+### Major changes
+
+* change preferred citation of R package **netdose**
+
+
+## netdose, version 0.7-4 (2026-01-15)
 
 ### Major changes
 
@@ -6,7 +13,8 @@
   - exponential model with a parameter p included
   - new option with argument correlated: correlated treatment arms in multi-arm studies (trials & triangles variance for parallel studies)
 
-## netdose, version 0.7-2 
+
+## netdose, version 0.7-2  (2025-10-10)
 
 ### Major changes
 
@@ -59,7 +67,6 @@
   - new list element 'D.matrix' with the transformed doses
 
 
-## netdose, version 0.6-0
+## netdose, version 0.6-0 (2025-04-17)
 
 - initial release on GitHub
-
