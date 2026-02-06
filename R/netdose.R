@@ -86,7 +86,7 @@
 #' The function \code{netdose} conducts a dose-response network meta-analysis
 #' with a variety of dose-response functions (such as the linear, exponential,
 #' fractional polynomials and restricted cubic splines) in a frequentist way
-#' as described in Petropoulou et al. (2025).
+#' as described in Petropoulou et al. (2026).
 #'
 #' The following dose-response functions are available:
 #' \itemize{
@@ -244,8 +244,10 @@
 #' \emph{Statistical Methods in Medical Research},
 #' \bold{33}, 1461--72
 #'
-#' Petropoulou et al. (2025):
-#' Network meta-analysis with dose-response relationships.
+#' Petropoulou M, Rücker G, Schwarzer G (2026):
+#' Network meta-analysis with dose-response relationships,
+#' \emph{BMC Medical Research Methodology},
+#' \bold{28}, 17
 #'
 #' @examples
 #' # Use a subset of 3 studies from anesthesia data
