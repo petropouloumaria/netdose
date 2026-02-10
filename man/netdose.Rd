@@ -264,7 +264,7 @@ splines (Hamza et al. 2024) in a Bayesian setting.
 The function \code{netdose} conducts a dose-response network meta-analysis
 with a variety of dose-response functions (such as the linear, exponential,
 fractional polynomials and restricted cubic splines) in a frequentist way
-as described in Petropoulou et al. (2025).
+as described in Petropoulou et al. (2026).
 
 The following dose-response functions are available:
 \itemize{
@@ -282,10 +282,10 @@ The parameters for the selected dose-response function can be specified
 using argument \code{param}: a numeric vector specifying the percentiles to
 set the knots for the restricted cubic splines (default: knots at the 10th,
 50th, and 90th percentile), a single numeric specifying the power of the
-fractional polynomial with order 1 (default: -0.5), or a numeric vector of
-length 2 specifying the first and second power of a fractional polynomial
+fractional polynomial with order 1 (default: -0.5), the power of the exponential (default: 1), 
+or a numeric vector of length 2 specifying the first and second power of a fractional polynomial
 with order 2 (default: -0.5 and -0.5). The input for argument \code{param}
-is ignored for a linear, exponential or quadratic polynomial dose-response
+is ignored for a linear or quadratic polynomial dose-response
 relationship.
 }
 \examples{
@@ -362,8 +362,10 @@ using restricted cubic splines.
 \emph{Statistical Methods in Medical Research},
 \bold{33}, 1461--72
 
-Petropoulou et al. (2025):
-Network meta-analysis with dose-response relationships.
+Petropoulou M, Rücker G, Schwarzer G (2026):
+Network meta-analysis with dose-response relationships,
+\emph{BMC Medical Research Methodology},
+\bold{28}, 17
 }
 \author{
 Maria Petropoulou <m.petropoulou.a@gmail.com>,

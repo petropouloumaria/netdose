@@ -86,7 +86,7 @@
 #' The function \code{netdose} conducts a dose-response network meta-analysis
 #' with a variety of dose-response functions (such as the linear, exponential,
 #' fractional polynomials and restricted cubic splines) in a frequentist way
-#' as described in Petropoulou et al. (2025).
+#' as described in Petropoulou et al. (2026).
 #'
 #' The following dose-response functions are available:
 #' \itemize{
@@ -244,8 +244,10 @@
 #' \emph{Statistical Methods in Medical Research},
 #' \bold{33}, 1461--72
 #'
-#' Petropoulou et al. (2025):
-#' Network meta-analysis with dose-response relationships.
+#' Petropoulou M, Rücker G, Schwarzer G (2026):
+#' Network meta-analysis with dose-response relationships,
+#' \emph{BMC Medical Research Methodology},
+#' \bold{28}, 17
 #'
 #' @examples
 #' # Use a subset of 3 studies from anesthesia data
@@ -1007,17 +1009,19 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     # Splitting approach
     #
     if (netconnection(treat1, treat2, ps$studlab[os])$n.subnets == 1) {
-      net2 <- netmeta(TE, seTE, treat1, treat2, studlab, data = data.tmp,
-                      reference.group = reference.group,
-                      tol.multiarm = tol.multiarm,
-                      tol.multiarm.se = tol.multiarm.se,
-                      details.chkmultiarm = details.chkmultiarm
-      )
+      net2 <- try(netmeta(TE, seTE, treat1, treat2, studlab, data = data.tmp,
+                          reference.group = reference.group,
+                          tol.multiarm = tol.multiarm,
+                          tol.multiarm.se = tol.multiarm.se,
+                          details.chkmultiarm = details.chkmultiarm),
+                  silent = TRUE)
       #
-      Q.split <- net2$Q
-      df.Q.split <- net2$df.Q
-      pval.Q.split <- net2$pval.Q
-   }
+      if (!inherits(net2, "try-error")) {
+        Q.split <- net2$Q
+        df.Q.split <- net2$df.Q
+        pval.Q.split <- net2$pval.Q
+      }
+    }
   #
   # Common effects DR-NMA model
   #

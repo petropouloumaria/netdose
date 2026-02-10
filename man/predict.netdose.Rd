@@ -42,7 +42,8 @@ dose-response network meta-analysis.
 }
 \details{
 The predict.netdose function calculates predicted effects for specified doses
-of one or more agents, based on a dose-response network meta-analysis.
+of one or more agents, based on a dose-response network meta-analysis
+(Petropoulou et al., 2026).
 It supports both linear and non-linear dose-response relationships,
 accommodating various modeling methods including linear, exponential,
 fractional polynomials, restricted cubic splines (RCS), and quadratic
@@ -84,8 +85,10 @@ pred1 <- predict(dr1)
 
 }
 \references{
-Petropoulou et al. (2025):
-Network meta-analysis with dose-response relationships.
+Petropoulou M, Rücker G, Schwarzer G (2026):
+Network meta-analysis with dose-response relationships,
+\emph{BMC Medical Research Methodology},
+\bold{28}, 17
 }
 \author{
 Maria Petropoulou <m.petropoulou.a@gmail.com>,
