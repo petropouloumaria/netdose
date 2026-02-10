@@ -1009,17 +1009,19 @@ netdose <- function(TE, seTE, agent1, dose1, agent2, dose2, studlab,
     # Splitting approach
     #
     if (netconnection(treat1, treat2, ps$studlab[os])$n.subnets == 1) {
-      net2 <- netmeta(TE, seTE, treat1, treat2, studlab, data = data.tmp,
-                      reference.group = reference.group,
-                      tol.multiarm = tol.multiarm,
-                      tol.multiarm.se = tol.multiarm.se,
-                      details.chkmultiarm = details.chkmultiarm
-      )
+      net2 <- try(netmeta(TE, seTE, treat1, treat2, studlab, data = data.tmp,
+                          reference.group = reference.group,
+                          tol.multiarm = tol.multiarm,
+                          tol.multiarm.se = tol.multiarm.se,
+                          details.chkmultiarm = details.chkmultiarm),
+                  silent = TRUE)
       #
-      Q.split <- net2$Q
-      df.Q.split <- net2$df.Q
-      pval.Q.split <- net2$pval.Q
-   }
+      if (!inherits(net2, "try-error")) {
+        Q.split <- net2$Q
+        df.Q.split <- net2$df.Q
+        pval.Q.split <- net2$pval.Q
+      }
+    }
   #
   # Common effects DR-NMA model
   #
